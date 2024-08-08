@@ -1,32 +1,134 @@
+@import 'https://www.nerdfonts.com/assets/css/webfont.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background: 22 22 22;
+
+    --foreground: 221 225 230;
+    --foreground-subtle: 57 57 57;
+    --foreground-very-subtle: 38 38 38;
+
+    --primary: 255 126 182;
+    --primary-foreground: var(--background);
+
+    --secondary: 82 82 82;
+    --secondary-foreground: var(--primary-foreground);
+
+    --popover: var(--gray-950);
+    --popover-foreground: var(--primary);
+
+    --card: 78 78 78;
+    --card-foreground: var(--foreground);
+
+    --border: var(--foreground);
+    --input: var(--secondary);
+
+    --ring: var(--primary);
+
+    --radius: 0.5rem;
+
+    --insert-mode: var(--primary);
+    --visual-mode: 190 149 255;
+    --command-mode: 66 190 101;
+    --normal-mode: 120 169 255;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components {
+  .horizontal {
+    @apply flex flex-row;
+  }
+
+  .vertical {
+    @apply flex flex-col;
+  }
+
+  .horizontal.center-v {
+    @apply items-center;
+  }
+
+  .horizontal.center-h {
+    @apply justify-center;
+  }
+
+  .horizontal.center {
+    @apply items-center justify-center;
+  }
+
+  .vertical.center-v {
+    @apply justify-center;
+  }
+
+  .vertical.center-h {
+    @apply items-center;
+  }
+
+  .vertical.center {
+    @apply items-center justify-center;
+  }
+
+  .space-between {
+    @apply justify-between;
+  }
+}
+
+@layer base {
+  html {
+    @apply size-full scroll-smooth;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply size-full bg-background text-foreground;
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+  }
 }
 
 @layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer utilities {
+  .ligatures-none {
+    font-variant-ligatures: none;
+  }
+
+  .ligatures-common {
+    font-variant-ligatures: common;
+  }
+  .ligatures-discretionary {
+    font-variant-ligatures: discretionary;
+  }
+  .ligatures-historical {
+    font-variant-ligatures: historical;
+  }
+  .ligatures-contextual {
+    font-variant-ligatures: contextual;
+  }
+
+  .ligatures-no-common {
+    font-variant-ligatures: no-common;
+  }
+  .ligatures-no-discretionary {
+    font-variant-ligatures: no-discretionary;
+  }
+  .ligatures-no-historical {
+    font-variant-ligatures: no-historical;
+  }
+  .ligatures-no-contextual {
+    font-variant-ligatures: no-contextual;
+  }
+
   .text-balance {
     text-wrap: balance;
   }
