@@ -1,8 +1,12 @@
 'use client';
 
-import { useMotions } from '@/hooks/use-motions';
-import { NavOption, NavOptionLabel } from '@/components/nav-option';
 import { useRouter } from 'next/navigation';
+
+import { useMotions } from '@/hooks/use-motions';
+import { modal } from '@/components/modal/system';
+
+import { ContactModal } from '@/components/contact-modal';
+import { NavOption, NavOptionLabel } from '@/components/nav-option';
 
 export const SiteNav = () => {
   const router = useRouter();
@@ -11,9 +15,16 @@ export const SiteNav = () => {
     router.push('/experience');
   };
 
+  const handleContactClick = () => {
+    modal(() => <ContactModal />);
+  };
+
   useMotions({
     'space+e': () => {
       handleExperienceClick();
+    },
+    'space+c': () => {
+      handleContactClick();
     },
     'space+s': () => {
       console.log('open settings');
@@ -28,6 +39,14 @@ export const SiteNav = () => {
           Experience
         </NavOptionLabel>
         SPC e
+      </NavOption>
+
+      <NavOption onClick={handleContactClick}>
+        <NavOptionLabel>
+          <i className="nf-md-contacts nf size-fit text-[19px] leading-none" />
+          Contact
+        </NavOptionLabel>
+        SPC c
       </NavOption>
 
       <NavOption>

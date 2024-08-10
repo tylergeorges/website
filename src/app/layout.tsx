@@ -6,6 +6,7 @@ import { fontMono, fontSans } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 
 import { SiteFooter } from '@/components/site-footer';
+import { ModalRenderer } from '@/components/modal';
 
 export const metadata: Metadata = {
   title: {
@@ -32,13 +33,18 @@ export default function RootLayout({
     <html lang="en" className="">
       <body
         className={cn(
-          'relative  bg-background px-6 pb-4 pt-8 font-mono leading-tight text-foreground antialiased vertical lg:pt-10',
+          'relative bg-background font-mono leading-tight text-foreground antialiased vertical',
           fontMono.variable,
           fontSans.variable
         )}
       >
-        {children}
-        <SiteFooter />
+        <ModalRenderer />
+
+        <div className="size-full flex-1 px-6 pb-4 pt-8 vertical lg:pt-10">
+          {children}
+
+          <SiteFooter />
+        </div>
       </body>
     </html>
   );

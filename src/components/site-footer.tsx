@@ -3,9 +3,9 @@ import { StatusIndicator } from '@/components/status-indicator';
 
 export const SiteFooter = () => (
   <div className="sticky bottom-0 hidden w-full justify-between center-v md:horizontal">
-    <span className="gap-4 horizontal center-v">
+    <span className="horizontal center-v">
       <StatusIndicator />
-
+      &nbsp;
       <CurrentPath />
     </span>
 

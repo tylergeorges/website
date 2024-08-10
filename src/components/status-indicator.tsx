@@ -3,6 +3,7 @@
 import { cn } from '@/lib/utils';
 import { EditorMode } from '@/types';
 import { useEditorMode } from '@/hooks/use-editor-mode';
+import { CenteredAsterisk } from '@/components/centered-asterisk';
 
 interface StatusIndicatorProps {
   className?: string;
@@ -11,11 +12,11 @@ interface StatusIndicatorProps {
 export const StatusIndicator = ({ className }: StatusIndicatorProps) => {
   const mode = useEditorMode();
 
-  let modeLabel = '';
+  let modeLabel: React.ReactNode = '';
 
   switch (mode) {
     case EditorMode.Normal:
-      modeLabel = 'normal';
+      modeLabel = <CenteredAsterisk className="text-xl font-black">**</CenteredAsterisk>;
       break;
     case EditorMode.Command:
       modeLabel = 'command';

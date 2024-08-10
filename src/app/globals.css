@@ -31,10 +31,10 @@
 
     --radius: 0.5rem;
 
-    --insert-mode: var(--primary);
+    --normal-mode: var(--primary);
     --visual-mode: 190 149 255;
     --command-mode: 66 190 101;
-    --normal-mode: 120 169 255;
+    --insert-mode: 120 169 255;
   }
 }
 
