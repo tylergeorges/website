@@ -8,7 +8,7 @@ interface ReactiveAsciiProps {
   fps?: number;
 }
 
-export const ReactiveAscii = ({ children: asciiText, fps = 60 }: ReactiveAsciiProps) => {
+export const ReactiveAscii = ({ children: asciiText, fps = 12 }: ReactiveAsciiProps) => {
   const reactiveAsciiRef = useReactiveAscii({ asciiText, fps });
 
   return <pre ref={reactiveAsciiRef}>&nbsp;</pre>;

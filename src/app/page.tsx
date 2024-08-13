@@ -4,16 +4,13 @@ import { ArrayToken } from '@/components/ui/array-token';
 import { StringToken } from '@/components/ui/string-token';
 import { SiteNav } from '@/components/site-nav';
 import { Container } from '@/components/container';
-import { ReactiveAscii } from '@/components/reactive-ascii';
 
 export default function Home() {
   return (
     <main className="flex-1 overflow-auto center vertical">
       <Container>
         <div className="mb-12 text-center">
-          <h1 className="font-bold">
-            <ReactiveAscii fps={12}>tyler georges</ReactiveAscii>
-          </h1>
+          <h1 className="font-bold">tyler georges</h1>
 
           <NewLine />
 
