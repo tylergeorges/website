@@ -1,8 +1,8 @@
 import { SiteConfig } from '@/types';
 
 export const siteConfig = {
-  name: 'Tyler Georges',
-  description: 'My personal  site',
+  name: 'tyler georges',
+  description: 'My personal site.',
   url: 'https://tylergeorges.com',
   ogImage: '',
   links: {
