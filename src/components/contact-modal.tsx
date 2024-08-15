@@ -1,14 +1,10 @@
 import Link from 'next/link';
 
 export const ContactModal = () => (
-  <div className="z-10 min-w-96 max-w-full bg-black p-8 vertical">
-    <div className="mb-8 text-center horizontal center">
-      <i className="nf-md-contacts nf size-fit leading-none" />
-      &nbsp;
-      <h1>Contact</h1>
-    </div>
+  <div className="z-10 min-w-96 max-w-full bg-black p-8 pt-0 vertical">
+    <h1 className="mb-8 w-fit self-center bg-primary text-black">&nbsp;Contact&nbsp;</h1>
 
-    <div className="mx-auto mb-10 space-y-2 vertical">
+    <div className="mx-auto my-4 gap-6 vertical">
       <div className="horizontal">
         <i className="nf-cod-github_inverted nf size-fit leading-none" />
         &nbsp;
@@ -34,8 +30,6 @@ export const ContactModal = () => (
       </div>
     </div>
 
-    <span className="">
-      <span className="text-[#78a9ff]">{'<Esc>'}</span>: Exit
-    </span>
+    <span className="text-[#78a9ff]">{'<Esc>'}</span>
   </div>
 );

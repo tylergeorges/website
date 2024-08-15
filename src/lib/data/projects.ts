@@ -3,6 +3,13 @@ import { Project } from '@/components/projects';
 export const projects: Project[] = [
   {
     date: '2024 - present',
+    title: 'fullstack - Echo Chat',
+    link: 'https://github.com/tylergeorges/echochat',
+    description: `A Real Time chat application powered by Next.js, Supabase, Drizzle. This project allows users to create guilds and invite their friends, and participate in real-time communication which is powered by Supabase.`,
+    details: 'Next.js • Supabase • React Query • TypeScript • Tailwind.css'
+  },
+  {
+    date: '2024 - present',
     title: 'fullstack - orchestr',
     description: `Leveraged React Server Components and React Query to optimize Supabase data
     handling, enabling seamless data prefetching and real-time optimistic updates for

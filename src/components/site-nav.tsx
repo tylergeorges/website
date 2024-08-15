@@ -32,7 +32,7 @@ export const SiteNav = () => {
   });
 
   return (
-    <ul className="my-16 w-full vertical">
+    <ul className="-16 w-full vertical">
       <NavOption onClick={handleExperienceClick}>
         <NavOptionLabel>
           <i className="nf-fa-flask nf size-fit text-[19px] leading-none" />

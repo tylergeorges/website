@@ -41,7 +41,7 @@ const Modal = ({ modal, removeModal, children }: ModalProps) => {
 
   return (
     <>
-      <div role="dialog" className="absolute size-full flex-1 flex center">
+      <div role="dialog" className="absolute flex size-full flex-1 center">
         {children(modal.id)}
       </div>
 

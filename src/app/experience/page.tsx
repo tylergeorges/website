@@ -16,16 +16,15 @@ export default function ExperiencePage() {
 
         <div>
           <h1 className="mb-3 font-bold">work experience</h1>
-
           <Projects projects={workExperience} />
         </div>
 
         <div>
-          <h1 className="mb-3 font-bold">projects</h1>
-
+          <h1 className="mb-3 font-bold ">projects</h1>
           <Projects projects={projects} />
         </div>
       </Container>
     </main>
   );
 }
+

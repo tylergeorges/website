@@ -1,4 +1,5 @@
 import { NewLine } from '@/components/new-line';
+import { cn } from '@/lib/utils';
 
 export const NavOption = ({
   children,
@@ -9,7 +10,11 @@ export const NavOption = ({
       <button
         type="button"
         onClick={onClick}
-        className="inline-flex h-[19px] w-full items-center justify-between gap-5 p-6 hover:bg-foreground-very-subtle"
+        className={cn(
+          'inline-flex h-[19px] w-full items-center justify-between gap-5 p-6',
+          'hover:bg-foreground-very-subtle',
+          // 'hover:bg-primary hover:text-primary-foreground'
+        )}
       >
         {children}
       </button>

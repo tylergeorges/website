@@ -12,7 +12,7 @@ export const SiteFooter = () => (
     <span>
       <span className="font-bold text-[#be95ff]">0 </span>
       <span className="font-bold text-[#3ddbd9]">0 </span>
-      portfolio 1:1
+      tyler-georges 1:1
     </span>
   </div>
 );
