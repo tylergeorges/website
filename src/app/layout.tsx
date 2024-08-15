@@ -30,21 +30,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="">
+    <html lang="en">
       <body
         className={cn(
-          'relative bg-background font-mono leading-tight text-foreground antialiased vertical',
+          'size-full flex-1 bg-background font-mono leading-tight text-foreground antialiased vertical',
           fontMono.variable,
           fontSans.variable
         )}
       >
         <ModalRenderer />
+        <div className="flex-1 px-6 pt-8 md:pb-4 lg:pt-10">{children}</div>
 
-        <div className="size-full flex-1 px-6 pb-4 pt-8 vertical lg:pt-10">
-          {children}
-
-          <SiteFooter />
-        </div>
+        <SiteFooter />
       </body>
     </html>
   );

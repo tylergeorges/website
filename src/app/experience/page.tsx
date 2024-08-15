@@ -3,16 +3,13 @@ import { workExperience } from '@/lib/data/work-experience';
 
 import { Container } from '@/components/container';
 import { Projects } from '@/components/projects';
-import { SiteLogo } from '@/components/site-logo';
+import { Ascii } from '@/components/ascii';
 
 export default function ExperiencePage() {
   return (
-    <main className="flex-1  vertical md:mx-auto md:max-w-3xl">
-
+    <main className="flex-1   md:mx-auto md:max-w-3xl">
       <Container>
-      <div className="my-10 text-center center-h vertical overflow-hidden">
-        <SiteLogo />
-      </div>
+        <Ascii ascii="circles" className="mb-6 text-secondary" />
 
         <div>
           <h1 className="mb-3 font-bold">work experience</h1>
@@ -20,11 +17,10 @@ export default function ExperiencePage() {
         </div>
 
         <div>
-          <h1 className="mb-3 font-bold ">projects</h1>
+          <h1 className="mb-3 font-bold">projects</h1>
           <Projects projects={projects} />
         </div>
       </Container>
     </main>
   );
 }
-
