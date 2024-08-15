@@ -39,7 +39,7 @@ export default function RootLayout({
         )}
       >
         <ModalRenderer />
-        <div className="flex-1 px-6 pt-8 md:pb-4 lg:pt-10">{children}</div>
+        <div className="flex-1 px-6 pt-8 md:pb-4 lg:pt-10 ">{children}</div>
 
         <SiteFooter />
       </body>

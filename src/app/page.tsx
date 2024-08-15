@@ -4,8 +4,8 @@ import { Ascii } from '@/components/ascii';
 
 export default function Home() {
   return (
-    <main className="flex-1 overflow-auto overflow-x-hidden center vertical">
-      <Container>
+    <main className="flex-1 size-full center flex overflow-auto overflow-x-hidden ">
+      <Container className=' center '>
         <Ascii ascii="dragon" className="mb-8 text-secondary" />
         <SiteNav />
 
