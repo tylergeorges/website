@@ -33,13 +33,14 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          'size-full flex-1 bg-background font-mono leading-tight text-foreground antialiased vertical',
+          'flex-1 bg-background font-mono leading-tight text-foreground antialiased vertical',
           fontMono.variable,
           fontSans.variable
         )}
       >
         <ModalRenderer />
-        <div className="flex-1 px-6 pt-8 md:pb-4 lg:pt-10 ">{children}</div>
+
+        <div className="flex-1">{children}</div>
 
         <SiteFooter />
       </body>
