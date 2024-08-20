@@ -25,9 +25,6 @@ export const SiteNav = () => {
     },
     'space+c': () => {
       handleContactClick();
-    },
-    'space+s': () => {
-      console.log('open settings');
     }
   });
 
@@ -47,13 +44,6 @@ export const SiteNav = () => {
           Contact
         </NavOptionLabel>
         SPC c
-      </NavOption>
-
-      <NavOption>
-        <NavOptionLabel>
-          <i className="nf-fa-gear nf size-fit text-[19px] leading-none" /> Settings
-        </NavOptionLabel>
-        SPC s
       </NavOption>
     </ul>
   );
