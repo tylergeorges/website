@@ -3,9 +3,7 @@
 import { useRouter } from 'next/navigation';
 
 import { useMotions } from '@/hooks/use-motions';
-import { modal } from '@/components/modal/system';
 
-import { ContactModal } from '@/components/contact-modal';
 import { NavOption, NavOptionLabel } from '@/components/nav-option';
 
 export const SiteNav = () => {
@@ -15,8 +13,16 @@ export const SiteNav = () => {
     router.push('/experience');
   };
 
-  const handleContactClick = () => {
-    modal(() => <ContactModal />);
+  const openInNewTab = (link: string) => {
+    window.open(link, '_blank');
+  };
+
+  const handleEmailClick = () => {
+    openInNewTab('mailto:tmg320v@gmail.com');
+  };
+
+  const handleGithubClick = () => {
+    openInNewTab('https://github.com/tylergeorges');
   };
 
   useMotions({
@@ -24,7 +30,10 @@ export const SiteNav = () => {
       handleExperienceClick();
     },
     'space+c': () => {
-      handleContactClick();
+      handleEmailClick();
+    },
+    'space+g': () => {
+      handleGithubClick();
     }
   });
 
@@ -38,10 +47,18 @@ export const SiteNav = () => {
         SPC e
       </NavOption>
 
-      <NavOption onClick={handleContactClick}>
+      <NavOption onClick={handleGithubClick}>
         <NavOptionLabel>
-          <i className="nf-md-contacts nf size-fit text-[19px] leading-none" />
-          Contact
+          <i className="nf-cod-github_inverted nf size-fit text-[19px] leading-none" />
+          GitHub
+        </NavOptionLabel>
+        SPC g
+      </NavOption>
+
+      <NavOption onClick={handleEmailClick}>
+        <NavOptionLabel>
+          <i className="nf-md-email nf size-fit text-[19px] leading-none" />
+          Email
         </NavOptionLabel>
         SPC c
       </NavOption>
