@@ -7,8 +7,8 @@ import { Ascii } from '@/components/ascii';
 
 export default function ExperiencePage() {
   return (
-    <main className="flex-1   md:mx-auto md:max-w-3xl">
-      <Container>
+    <main className="flex-1 md:mx-auto md:max-w-3xl">
+      <Container className="p-8 pb-0">
         <Ascii ascii="circles" className="mb-6 text-secondary" />
 
         <div>
