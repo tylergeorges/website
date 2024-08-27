@@ -4,6 +4,8 @@ declare global {
   // biome-ignore lint/complexity/noBannedTypes: <explanation>
   type WithChildren<T = {}> = React.PropsWithChildren<T>;
 
+  type WithNonNullableChildren<T = {}> = NonNullable<React.PropsWithChildren<T>>;
+
   // biome-ignore lint/complexity/noBannedTypes: <explanation>
   type WithClassNameChildrenProps<T = {}> = WithChildren<T & { className?: string }>;
 

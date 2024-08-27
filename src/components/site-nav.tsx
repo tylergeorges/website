@@ -2,8 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 
-import { useMotions } from '@/hooks/use-motions';
-
 import { NavOption, NavOptionLabel } from '@/components/nav-option';
 
 export const SiteNav = () => {
@@ -25,42 +23,27 @@ export const SiteNav = () => {
     openInNewTab('https://github.com/tylergeorges');
   };
 
-  useMotions({
-    'space+e': () => {
-      handleExperienceClick();
-    },
-    'space+c': () => {
-      handleEmailClick();
-    },
-    'space+g': () => {
-      handleGithubClick();
-    }
-  });
-
   return (
     <ul className="-16 w-full vertical">
-      <NavOption onClick={handleExperienceClick}>
+      <NavOption onClick={handleExperienceClick} motion="space+e">
         <NavOptionLabel>
           <i className="nf-fa-flask nf size-fit text-[19px] leading-none" />
           Experience
         </NavOptionLabel>
-        SPC e
       </NavOption>
 
-      <NavOption onClick={handleGithubClick}>
+      <NavOption onClick={handleGithubClick} motion="space+g">
         <NavOptionLabel>
           <i className="nf-cod-github_inverted nf size-fit text-[19px] leading-none" />
           GitHub
         </NavOptionLabel>
-        SPC g
       </NavOption>
 
-      <NavOption onClick={handleEmailClick}>
+      <NavOption onClick={handleEmailClick} motion="space+m">
         <NavOptionLabel>
           <i className="nf-md-email nf size-fit text-[19px] leading-none" />
           Email
         </NavOptionLabel>
-        SPC c
       </NavOption>
     </ul>
   );
