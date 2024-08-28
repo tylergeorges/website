@@ -16,7 +16,7 @@ export const StatusIndicator = ({ className }: StatusIndicatorProps) => {
 
   switch (mode) {
     case EditorMode.Normal:
-      modeLabel = <CenteredAsterisk className="text-xl font-black">**</CenteredAsterisk>;
+      modeLabel = <CenteredAsterisk className="text-xl font-black before:content-['**']" />;
       break;
     case EditorMode.Command:
       modeLabel = 'command';
@@ -34,7 +34,7 @@ export const StatusIndicator = ({ className }: StatusIndicatorProps) => {
   return (
     <div
       className={cn(
-        'select-none text-lg font-bold uppercase text-primary-foreground',
+        'h-7 select-none overflow-hidden text-lg font-bold uppercase text-primary-foreground',
         mode === EditorMode.Normal && 'bg-normal-mode',
         mode === EditorMode.Command && 'bg-command-mode',
         mode === EditorMode.Visual && 'bg-visual-mode',
