@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { Analytics } from '@vercel/analytics/react';
 
 import { siteConfig } from '@/config/site';
 import { fontMono, fontSans } from '@/lib/fonts';
@@ -39,10 +40,9 @@ export default function RootLayout({
         )}
       >
         <ModalRenderer />
-
         <div className="flex-1">{children}</div>
-
         <SiteFooter />
+        <Analytics />
       </body>
     </html>
   );
