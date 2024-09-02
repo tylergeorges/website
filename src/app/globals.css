@@ -6,16 +6,16 @@
 
 @layer base {
   :root {
-    --background: 22 22 22;
+    --background: 0 0 0;
 
     --foreground: 221 225 230;
-    --foreground-subtle: 57 57 57;
+    --foreground-subtle: 118 118 118;
     --foreground-very-subtle: 38 38 38;
 
-    --primary: 255 126 182;
+    --primary: 255 95 135;
     --primary-foreground: var(--background);
 
-    --secondary: 82 82 82;
+    --secondary: 78 78 78;
     --secondary-foreground: var(--primary-foreground);
 
     --popover: var(--gray-950);
@@ -99,6 +99,41 @@
 }
 
 @layer utilities {
+  .select {
+    --_g: rgb(var(--background)) 90deg, var(--select-border-color) 0;
+    --_p: var(--w) var(--w) border-box no-repeat;
+    --w: 12px;
+    --select-border-color: rgb(var(--primary));
+    --select-border-width: 2px;
+
+    border: var(--select-border-width) solid #0000;
+    outline: none;
+  }
+
+  .select:hover {
+    background:
+      conic-gradient(
+          from 90deg at top var(--select-border-width) left var(--select-border-width),
+          var(--_g)
+        )
+        0 0 / var(--_p),
+      conic-gradient(
+          from 180deg at top var(--select-border-width) right var(--select-border-width),
+          var(--_g)
+        )
+        100% 0 / var(--_p),
+      conic-gradient(
+          from 0deg at bottom var(--select-border-width) left var(--select-border-width),
+          var(--_g)
+        )
+        0 100% / var(--_p),
+      conic-gradient(
+          from -90deg at bottom var(--select-border-width) right var(--select-border-width),
+          var(--_g)
+        )
+        100% 100% / var(--_p);
+  }
+
   .ligatures-none {
     font-variant-ligatures: none;
   }

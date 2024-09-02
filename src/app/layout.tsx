@@ -3,10 +3,9 @@ import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 
 import { siteConfig } from '@/config/site';
-import { fontMono, fontSans } from '@/lib/fonts';
+import { fontMono, fontSans, fontPixels, fontPixelsHeading } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 
-import { SiteFooter } from '@/components/site-footer';
 import { ModalRenderer } from '@/components/modal';
 
 export const metadata: Metadata = {
@@ -34,14 +33,15 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          'flex-1 bg-background font-mono leading-tight text-foreground antialiased vertical',
+          'flex-1 bg-background font-pixels text-base leading-tight text-foreground antialiased vertical',
           fontMono.variable,
-          fontSans.variable
+          fontSans.variable,
+          fontPixels.variable,
+          fontPixelsHeading.variable
         )}
       >
         <ModalRenderer />
         <div className="flex-1">{children}</div>
-        <SiteFooter />
         <Analytics />
       </body>
     </html>
