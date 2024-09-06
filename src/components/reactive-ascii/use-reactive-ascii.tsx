@@ -2,9 +2,10 @@
 
 'use client';
 
-import { Caret } from '@/components/caret';
-import { useAsciiAnimations } from '@/components/reactive-ascii/use-ascii-animations';
 import { useEffect, useRef } from 'react';
+
+import { useAsciiAnimations } from '@/components/reactive-ascii/use-ascii-animations';
+import { useIsomorphicLayoutEffect } from '@/hooks/use-isomorphic-layout-effect';
 
 interface UseReactiveAsciiArgs {
   asciiText: string;
@@ -18,22 +19,18 @@ interface ReactiveAsciiState {
 }
 
 export const useReactiveAscii = ({ asciiText, fps }: UseReactiveAsciiArgs) => {
-  // const reactiveAsciiRef = useRef<HTMLPreElement>(null);
-  // const caretRef = useRef<HTMLSpanElement>(null);
   const reactiveAsciiStateRef = useRef<ReactiveAsciiState>({ asciiText, fps, pos: -1 });
   const rafRef = useRef<number>(0);
 
   const [reactiveAsciiRef, asciiAnimationsRef] = useAsciiAnimations();
   const [caretRef, caretAnimationsRef] = useAsciiAnimations();
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     let done = false;
 
     let start: number;
 
     let frame = -1;
-
-    let showElement = false;
 
     const asciiAnimations = asciiAnimationsRef.current;
     const reactiveAscii = reactiveAsciiRef.current;
@@ -42,36 +39,16 @@ export const useReactiveAscii = ({ asciiText, fps }: UseReactiveAsciiArgs) => {
     const caret = caretRef.current;
 
     const delay = 1000 / reactiveAsciiStateRef.current.fps;
-    // const frameDelay = 6;
-
-    let typing = false;
-    // const blinkFrames = 1;
-    // const blinkFrames = 1
-    const blinkFrames = 6;
-    // const blinkFrames = Math.floor(reactiveAsciiStateRef.current.fps / asciiText.length);
-    const elapsedBlinkFrame = 0;
-    // let elapsedBlinkFrame = blinkFrames;
-    const blink = false;
-
-    const hideCaretFrame = Math.floor(blinkFrames / 3);
-
-    console.log(blinkFrames);
 
     const whitespace = '&nbsp;';
 
     const textPlaceholder = whitespace.repeat(asciiText.length);
 
-    const placeHolderLength = Math.floor(textPlaceholder.length / whitespace.length);
-
-    console.log('placeHolderLength', placeHolderLength);
-    if (!showElement && reactiveAscii && asciiAnimations) {
-      // asciiAnimations.hide();
-      if (caret && reactiveAscii.children.length === 1) {
-        reactiveAscii.innerHTML = '';
-        // asciiAnimations.push(caret);
-        // asciiAnimations.push(textPlaceholder);
-        asciiAnimations.push(caret);
+    if (reactiveAscii && asciiAnimations && caretAnimations) {
+      reactiveAscii.innerHTML = '';
+      if (caret) {
         caretAnimations.show();
+        reactiveAscii.append(caret);
 
         reactiveAscii.innerHTML += textPlaceholder;
       }
@@ -93,33 +70,22 @@ export const useReactiveAscii = ({ asciiText, fps }: UseReactiveAsciiArgs) => {
         if (done) cancelAnimationFrame(rafRef.current);
 
         const state = reactiveAsciiStateRef.current;
-        if (frame > blinkFrames) {
-          reactiveAsciiStateRef.current.pos++;
+        reactiveAsciiStateRef.current.pos++;
 
-          if (caretAnimations) {
-            // caretAnimations.show();
-          }
+        let trimmedContent = '';
 
-          if (!showElement) {
-            showElement = true;
-          }
+        const endIdx = whitespace.length * state.pos;
 
-          let trimmedContent = '';
+        const rightWhitespace = textPlaceholder.substring(endIdx);
 
-          const endIdx = whitespace.length * state.pos;
+        if (reactiveAsciiStateRef.current.pos >= 0) {
+          trimmedContent = state.asciiText.substring(0, reactiveAsciiStateRef.current.pos);
+        }
 
-          const rightWhitespace = textPlaceholder.substring(endIdx);
-
-          if (reactiveAsciiStateRef.current.pos >= 0) {
-            trimmedContent = state.asciiText.substring(0, reactiveAsciiStateRef.current.pos);
-          }
-
-          if (caret && caretAnimations) {
-            reactiveAscii.innerHTML = `${trimmedContent}&nbsp;`;
-            asciiAnimations.push(caret);
-            reactiveAscii.innerHTML += rightWhitespace;
-          }
-
+        if (caret && caretAnimations) {
+          reactiveAscii.innerHTML = `${trimmedContent}&nbsp;`;
+          asciiAnimations.push(caret);
+          reactiveAscii.innerHTML += rightWhitespace;
         }
 
         // if (caretAnimations && !typing) {
@@ -149,7 +115,6 @@ export const useReactiveAscii = ({ asciiText, fps }: UseReactiveAsciiArgs) => {
         // }
 
         if (reactiveAsciiStateRef.current.pos === state.asciiText.length) {
-          typing = false;
           done = true;
         }
       }
