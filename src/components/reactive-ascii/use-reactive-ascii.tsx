@@ -47,20 +47,33 @@ export const useReactiveAscii = ({ asciiText, fps }: UseReactiveAsciiArgs) => {
     let typing = false;
     // const blinkFrames = 1;
     // const blinkFrames = 1
-    const blinkFrames = Math.floor(reactiveAsciiStateRef.current.fps / asciiText.length);
-    let elapsedBlinkFrame = blinkFrames;
+    const blinkFrames = 6;
+    // const blinkFrames = Math.floor(reactiveAsciiStateRef.current.fps / asciiText.length);
+    const elapsedBlinkFrame = 0;
     // let elapsedBlinkFrame = blinkFrames;
-    let blink = false;
+    const blink = false;
+
+    const hideCaretFrame = Math.floor(blinkFrames / 3);
+
+    console.log(blinkFrames);
 
     const whitespace = '&nbsp;';
 
     const textPlaceholder = whitespace.repeat(asciiText.length);
 
-    if (!showElement && asciiAnimations) {
-      // asciiAnimations.pop();
-      if (caret) {
+    const placeHolderLength = Math.floor(textPlaceholder.length / whitespace.length);
+
+    console.log('placeHolderLength', placeHolderLength);
+    if (!showElement && reactiveAscii && asciiAnimations) {
+      // asciiAnimations.hide();
+      if (caret && reactiveAscii.children.length === 1) {
+        reactiveAscii.innerHTML = '';
         // asciiAnimations.push(caret);
         // asciiAnimations.push(textPlaceholder);
+        asciiAnimations.push(caret);
+        caretAnimations.show();
+
+        reactiveAscii.innerHTML += textPlaceholder;
       }
     }
 
@@ -69,10 +82,6 @@ export const useReactiveAscii = ({ asciiText, fps }: UseReactiveAsciiArgs) => {
 
       if (start === undefined) {
         start = timestamp;
-
-        if (caret) {
-          asciiAnimations.push(textPlaceholder);
-        }
       }
 
       const elapsed = timestamp - start;
@@ -84,12 +93,12 @@ export const useReactiveAscii = ({ asciiText, fps }: UseReactiveAsciiArgs) => {
         if (done) cancelAnimationFrame(rafRef.current);
 
         const state = reactiveAsciiStateRef.current;
-
         if (frame > blinkFrames) {
-          if (!typing) {
-            typing = true;
+          reactiveAsciiStateRef.current.pos++;
+
+          if (caretAnimations) {
+            // caretAnimations.show();
           }
-          asciiAnimations.show();
 
           if (!showElement) {
             showElement = true;
@@ -97,42 +106,47 @@ export const useReactiveAscii = ({ asciiText, fps }: UseReactiveAsciiArgs) => {
 
           let trimmedContent = '';
 
+          const endIdx = whitespace.length * state.pos;
+
+          const rightWhitespace = textPlaceholder.substring(endIdx);
+
           if (reactiveAsciiStateRef.current.pos >= 0) {
             trimmedContent = state.asciiText.substring(0, reactiveAsciiStateRef.current.pos);
           }
 
-          if (caret) {
+          if (caret && caretAnimations) {
             reactiveAscii.innerHTML = `${trimmedContent}&nbsp;`;
             asciiAnimations.push(caret);
+            reactiveAscii.innerHTML += rightWhitespace;
           }
 
-          reactiveAsciiStateRef.current.pos++;
         }
 
-        if (caretAnimations && !typing) {
-          if (!blink) {
-            // asciiAnimations.show();
-            caretAnimations.show();
-            // blink = false;
-            // asciiAnimations.hide();
-          } else if (blink) {
-            // elapsedBlinkFrame = 0;
-            // asciiAnimations.show();
+        // if (caretAnimations && !typing) {
+        //   // console.log(elapsedBlinkFrame,blinkFrames,frame)
+        //   // console.log(blinkFrames/2,elapsedBlinkFrame)
 
-            // asciiAnimations.hide();
-            caretAnimations.hide();
-          }
+        //   if (elapsedBlinkFrame === hideCaretFrame && !blink) {
+        //     caretAnimations.hide();
+        //     elapsedBlinkFrame = 0;
+        //     // elapsedBlinkFrame -= 0.5;
+        //     blink = true;
+        //   } else if (elapsedBlinkFrame < blinkFrames ) {
+        //     caretAnimations.show();
+        //     elapsedBlinkFrame += 0.5;
+        //     blink = false;
+        //   }
 
-          if (elapsedBlinkFrame === blinkFrames) {
-            elapsedBlinkFrame = 0;
-            reactiveAsciiStateRef.current.pos++;
-            blink = false;
-          } else if (elapsedBlinkFrame < blinkFrames) {
-            elapsedBlinkFrame += 1;
-
-            blink = true;
-          }
-        }
+        //   if (!blink) {
+        //     // asciiAnimations.show();
+        //     // blink = false;
+        //     // asciiAnimations.hide();
+        //   } else if (blink) {
+        //     // elapsedBlinkFrame = 0;
+        //     // asciiAnimations.show();
+        //     // asciiAnimations.hide();
+        //   }
+        // }
 
         if (reactiveAsciiStateRef.current.pos === state.asciiText.length) {
           typing = false;
@@ -152,7 +166,7 @@ export const useReactiveAscii = ({ asciiText, fps }: UseReactiveAsciiArgs) => {
     return () => {
       if (rafRef.current !== undefined) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [caretAnimationsRef, asciiAnimationsRef, asciiText.length, caretRef, reactiveAsciiRef]);
 
   return [reactiveAsciiRef, caretRef] as const;
 };
