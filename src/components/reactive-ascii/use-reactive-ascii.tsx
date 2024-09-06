@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import { useAsciiAnimations } from '@/components/reactive-ascii/use-ascii-animations';
 import { useIsomorphicLayoutEffect } from '@/hooks/use-isomorphic-layout-effect';
@@ -14,27 +14,75 @@ interface UseReactiveAsciiArgs {
   fps: number;
 }
 
+interface UseReactiveAsciiController {
+  restart: () => void;
+  togglePlayingState: () => void;
+}
+
+type AnimationHandler = ReturnType<ReactiveAnimation>;
 interface ReactiveAsciiState {
   asciiText: string;
   pos: number;
   fps: number;
-  animations: ReturnType<ReactiveAnimation>['handler'][];
+  animations: AnimationHandler[];
+  animationIdx: number;
+  playing: boolean;
 }
 
 export const useReactiveAscii = ({ asciiText, fps, animations }: UseReactiveAsciiArgs) => {
+  const cachedAnimations = useRef(animations);
+
+  useIsomorphicLayoutEffect(() => {
+    cachedAnimations.current = animations;
+  });
+
   const reactiveAsciiStateRef = useRef<ReactiveAsciiState>({
     asciiText,
     animations: [],
     fps,
-    pos: -1
+    pos: -1,
+    playing: true,
+    animationIdx: 0
   });
+
+  const [playing, setPlaying] = useState(true);
+
   const rafRef = useRef<number>(0);
 
+  const reactiveAsciiController = useRef<UseReactiveAsciiController>({
+    togglePlayingState: () => {
+      // setPlaying(prev => !prev);
+
+      const isDoneAnimating = reactiveAsciiStateRef.current.animationIdx === animations.length - 1;
+
+      if (!isDoneAnimating) {
+        reactiveAsciiStateRef.current.animationIdx = 0;
+        reactiveAsciiStateRef.current.playing = !reactiveAsciiStateRef.current.playing;
+
+        setPlaying(prev => !prev);
+      }
+    },
+
+    restart() {
+      for (const animation of reactiveAsciiStateRef.current.animations) {
+        animation.restart();
+      }
+
+      reactiveAsciiStateRef.current.animationIdx = 0;
+      reactiveAsciiStateRef.current.playing = true;
+
+      setPlaying(true);
+    }
+  });
+
   const [reactiveAsciiRef, asciiAnimationsRef] = useAsciiAnimations();
-  const [caretRef, caretAnimationsRef] = useAsciiAnimations();
+  // const [caretRef, caretAnimationsRef] = useAsciiAnimations();
 
   useIsomorphicLayoutEffect(() => {
+    const animations = cachedAnimations.current;
+
     let done = false;
+    // let done = reactiveAsciiStateRef.current.animationIdx === animations.length
 
     let start: number;
 
@@ -43,111 +91,74 @@ export const useReactiveAscii = ({ asciiText, fps, animations }: UseReactiveAsci
     const asciiAnimations = asciiAnimationsRef.current;
     const reactiveAscii = reactiveAsciiRef.current;
 
-    const caretAnimations = caretAnimationsRef.current;
-    const caret = caretRef.current;
+    let delay = 1000 / reactiveAsciiStateRef.current.fps;
 
-    const delay = 1000 / reactiveAsciiStateRef.current.fps;
+    delay += asciiText.length;
 
-    const whitespace = '&nbsp;';
+    const finish = (idx: number) => {
+      if (idx === animations.length - 1) {
+        done = true;
 
-    const textPlaceholder = whitespace.repeat(asciiText.length);
+        reactiveAsciiStateRef.current.playing = false;
+        setPlaying(false);
 
-    if (reactiveAscii && asciiAnimations && caretAnimations) {
-      reactiveAscii.innerHTML = '';
-      if (caret) {
-        caretAnimations.show();
-        reactiveAscii.append(caret);
-
-        reactiveAscii.innerHTML += textPlaceholder;
+        return;
       }
-    }
 
-    const finish = () => {
-      done = true;
+      reactiveAsciiStateRef.current.animationIdx += 1;
     };
 
-    if (reactiveAscii) {
-      for (const animation of animations) {
+    if (reactiveAscii && !reactiveAsciiStateRef.current.animations.length) {
+      reactiveAscii.style.opacity = '0';
+
+      for (let i = 0; i < animations.length; i++) {
+        const animation = animations[i];
+
         reactiveAsciiStateRef.current.animations.push(
-          animation({ finish, canvas: reactiveAscii, text: asciiText, fps }).handler
+          animation({
+            finish: () => {
+              finish(i);
+            },
+            canvas: reactiveAscii,
+            text: asciiText,
+            fps
+          })
         );
       }
     }
+
     const reactiveAnimations = reactiveAsciiStateRef.current.animations;
 
     const animate = (timestamp: number) => {
-      if (!asciiAnimations || !reactiveAscii) return;
+      if (!asciiAnimations || !reactiveAscii) {
+        cancelAnimationFrame(rafRef.current);
 
-      if (start === undefined) {
-        start = timestamp;
+        return;
       }
 
-      const elapsed = timestamp - start;
-      const seg = Math.floor(elapsed / delay);
-
-      if (seg > frame) {
-        frame = seg;
-
-        if (done) cancelAnimationFrame(rafRef.current);
-
-        console.log(done);
-
-        // const state = reactiveAsciiStateRef.current;
-        // reactiveAsciiStateRef.current.pos++;
-
-        // let trimmedContent = '';
-
-        // const endIdx = whitespace.length * state.pos;
-
-        // const rightWhitespace = textPlaceholder.substring(endIdx);
-
-        for (const animation of reactiveAnimations) {
-          animation();
+      if (reactiveAsciiStateRef.current.playing) {
+        if (start === undefined) {
+          start = timestamp;
         }
 
-        // if (reactiveAsciiStateRef.current.pos >= 0) {
-        //   trimmedContent = state.asciiText.substring(0, reactiveAsciiStateRef.current.pos);
-        // }
+        const elapsed = timestamp - start;
+        const seg = Math.floor(elapsed / delay);
 
-        // if (caret && caretAnimations) {
-        //   reactiveAscii.innerHTML = `${trimmedContent}&nbsp;`;
-        //   asciiAnimations.push(caret);
-        //   reactiveAscii.innerHTML += rightWhitespace;
-        // }
+        if (seg > frame) {
+          frame = seg;
 
-        // if (caretAnimations && !typing) {
-        //   // console.log(elapsedBlinkFrame,blinkFrames,frame)
-        //   // console.log(blinkFrames/2,elapsedBlinkFrame)
+          if (done) cancelAnimationFrame(rafRef.current);
 
-        //   if (elapsedBlinkFrame === hideCaretFrame && !blink) {
-        //     caretAnimations.hide();
-        //     elapsedBlinkFrame = 0;
-        //     // elapsedBlinkFrame -= 0.5;
-        //     blink = true;
-        //   } else if (elapsedBlinkFrame < blinkFrames ) {
-        //     caretAnimations.show();
-        //     elapsedBlinkFrame += 0.5;
-        //     blink = false;
-        //   }
+          const currentAnimation = reactiveAnimations[reactiveAsciiStateRef.current.animationIdx];
 
-        //   if (!blink) {
-        //     // asciiAnimations.show();
-        //     // blink = false;
-        //     // asciiAnimations.hide();
-        //   } else if (blink) {
-        //     // elapsedBlinkFrame = 0;
-        //     // asciiAnimations.show();
-        //     // asciiAnimations.hide();
-        //   }
-        // }
+          currentAnimation.run();
+        }
 
-        // if (reactiveAsciiStateRef.current.pos === state.asciiText.length) {
-        //   done = true;
-        // }
-      }
-
-      if (!done) {
-        rafRef.current = requestAnimationFrame(animate);
+        if (!done) {
+          rafRef.current = requestAnimationFrame(animate);
+        } else {
+          cancelAnimationFrame(rafRef.current);
+        }
       } else {
         cancelAnimationFrame(rafRef.current);
       }
@@ -158,7 +169,7 @@ export const useReactiveAscii = ({ asciiText, fps, animations }: UseReactiveAsci
     return () => {
       if (rafRef.current !== undefined) cancelAnimationFrame(rafRef.current);
     };
-  }, [caretAnimationsRef, asciiAnimationsRef, asciiText.length, caretRef, reactiveAsciiRef]);
+  }, [playing]);
 
-  return [reactiveAsciiRef, caretRef] as const;
+  return [reactiveAsciiRef, reactiveAsciiController] as const;
 };

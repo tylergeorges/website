@@ -1,3 +1,6 @@
+import { ASCII_SYMBOLS, updateChild } from '@/components/reactive-ascii/utils';
+
+/* eslint-disable no-plusplus */
 export interface ReactiveAnimationConfig {
   /**
    * The text to be animated.
@@ -17,48 +20,90 @@ export interface ReactiveAnimationConfig {
   canvas: HTMLElement;
 }
 
-type ReactiveAnimationHandler = () => void;
+type CreateReactiveAnimation = (config: { run: () => void; restart: () => void }) => {
+  run: () => void;
+  restart: () => void;
+};
 
-export const createReactiveAnimation = (handler: ReactiveAnimationHandler) => ({
-  handler
+export const createReactiveAnimation: CreateReactiveAnimation = ({ run, restart }) => ({
+  run,
+  restart
 });
 
 export type ReactiveAnimation = (
   config: ReactiveAnimationConfig
 ) => ReturnType<typeof createReactiveAnimation>;
 
+export const randomSymbolsAnmiation: ReactiveAnimation = ({ canvas, finish, text }) => {
+  let currentIteration = 0;
+
+  const run = () => {
+    if (currentIteration === ASCII_SYMBOLS.length) {
+      finish();
+
+      return;
+    }
+
+    const currentSymbol = ASCII_SYMBOLS[currentIteration];
+
+    const randomizedText = text
+      .split('')
+      .map(char => {
+        if (char === ' ' || char === '\xA0' || char === '&nbsp;') {
+          return char;
+        }
+
+        return currentSymbol;
+      })
+      .join('');
+
+    const cursor = canvas.lastElementChild;
+
+    canvas.innerHTML = randomizedText;
+
+    if (cursor) {
+      canvas.innerHTML += '&nbsp;';
+
+      canvas.append(cursor);
+    }
+
+    currentIteration += 1;
+  };
+
+  const restart = () => {
+    currentIteration = 0;
+    run();
+  };
+
+  return createReactiveAnimation({ run, restart });
+};
+
 // eslint-disable-next-line arrow-body-style
-export const reactiveTypewriterAnimation: ReactiveAnimation = ({
-  finish,
-  text,
-  fps,
-  canvas
-  //   caretRef
-}) => {
+export const reactiveTypewriterAnimation: ReactiveAnimation = config => {
+  const { text, canvas, finish } = config;
+
   let animationPos = 0;
 
   const whitespace = '&nbsp;';
-
   const textPlaceholder = whitespace.repeat(text.length);
 
-  let caret: HTMLSpanElement;
+  let caret = canvas.children.item(0) as HTMLElement | null;
 
-  if (canvas && canvas.children[0] instanceof HTMLElement) {
-    caret = canvas.children[0];
-  } else {
-    caret = document.createElement('span');
-    caret.innerText = 'W';
-    caret.className = 'absolute -ml-[1ch] h-[19.056338028169012px] bg-foreground';
+  if (!caret) {
+    const caretEl = document.createElement('span');
+    caretEl.className = 'absolute -ml-[1ch] h-[19.056338028169012px] w-[1ch] bg-foreground';
+    caret = caretEl;
   }
 
-  //   canvas.append(caret)
+  if (canvas.children.length < 1) {
+    canvas.innerHTML += textPlaceholder;
+  }
 
-  return createReactiveAnimation(() => {
-    // const state = reactiveAsciiStateRef.current;
-    animationPos += 1;
+  canvas.style.opacity = '1';
 
-    let trimmedContent = '';
+  let trimmedContent = '';
 
+  const run = () => {
     const endIdx = whitespace.length * animationPos;
 
     const rightWhitespace = textPlaceholder.substring(endIdx);
@@ -67,43 +112,30 @@ export const reactiveTypewriterAnimation: ReactiveAnimation = ({
       trimmedContent = text.substring(0, animationPos);
     }
 
-    if (caret) {
-      canvas.innerHTML = `${trimmedContent}&nbsp;`;
+    canvas.innerHTML = `${trimmedContent}&nbsp;`;
+    canvas.append(caret);
 
-      canvas.append(caret);
-      //   asciiAnimations.push(caret);
-      canvas.innerHTML += rightWhitespace;
-      //   reactiveAscii.innerHTML += rightWhitespace;
-    }
-
-    // if (caretAnimations && !typing) {
-    //   // console.log(elapsedBlinkFrame,blinkFrames,frame)
-    //   // console.log(blinkFrames/2,elapsedBlinkFrame)
-
-    //   if (elapsedBlinkFrame === hideCaretFrame && !blink) {
-    //     caretAnimations.hide();
-    //     elapsedBlinkFrame = 0;
-    //     // elapsedBlinkFrame -= 0.5;
-    //     blink = true;
-    //   } else if (elapsedBlinkFrame < blinkFrames ) {
-    //     caretAnimations.show();
-    //     elapsedBlinkFrame += 0.5;
-    //     blink = false;
-    //   }
-
-    //   if (!blink) {
-    //     // asciiAnimations.show();
-    //     // blink = false;
-    //     // asciiAnimations.hide();
-    //   } else if (blink) {
-    //     // elapsedBlinkFrame = 0;
-    //     // asciiAnimations.show();
-    //     // asciiAnimations.hide();
-    //   }
-    // }
+    canvas.innerHTML += rightWhitespace;
 
     if (animationPos === text.length) {
+      caret.style.opacity = '0';
+
+      updateChild(canvas, caret);
+
       finish();
     }
-  });
+
+    animationPos += 1;
+  };
+
+  const restart = () => {
+    animationPos = 0;
+
+    return run;
+  };
+
+  return {
+    run,
+    restart
+  };
 };
