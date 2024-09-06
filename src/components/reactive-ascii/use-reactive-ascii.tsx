@@ -6,9 +6,11 @@ import { useEffect, useRef } from 'react';
 
 import { useAsciiAnimations } from '@/components/reactive-ascii/use-ascii-animations';
 import { useIsomorphicLayoutEffect } from '@/hooks/use-isomorphic-layout-effect';
+import { ReactiveAnimation } from '@/components/reactive-ascii/reactive-animation';
 
 interface UseReactiveAsciiArgs {
   asciiText: string;
+  animations: ReactiveAnimation[];
   fps: number;
 }
 
@@ -16,10 +18,16 @@ interface ReactiveAsciiState {
   asciiText: string;
   pos: number;
   fps: number;
+  animations: ReturnType<ReactiveAnimation>['handler'][];
 }
 
-export const useReactiveAscii = ({ asciiText, fps }: UseReactiveAsciiArgs) => {
-  const reactiveAsciiStateRef = useRef<ReactiveAsciiState>({ asciiText, fps, pos: -1 });
+export const useReactiveAscii = ({ asciiText, fps, animations }: UseReactiveAsciiArgs) => {
+  const reactiveAsciiStateRef = useRef<ReactiveAsciiState>({
+    asciiText,
+    animations: [],
+    fps,
+    pos: -1
+  });
   const rafRef = useRef<number>(0);
 
   const [reactiveAsciiRef, asciiAnimationsRef] = useAsciiAnimations();
@@ -54,6 +62,19 @@ export const useReactiveAscii = ({ asciiText, fps }: UseReactiveAsciiArgs) => {
       }
     }
 
+    const finish = () => {
+      done = true;
+    };
+
+    if (reactiveAscii) {
+      for (const animation of animations) {
+        reactiveAsciiStateRef.current.animations.push(
+          animation({ finish, canvas: reactiveAscii, text: asciiText, fps }).handler
+        );
+      }
+    }
+    const reactiveAnimations = reactiveAsciiStateRef.current.animations;
+
     const animate = (timestamp: number) => {
       if (!asciiAnimations || !reactiveAscii) return;
 
@@ -69,24 +90,30 @@ export const useReactiveAscii = ({ asciiText, fps }: UseReactiveAsciiArgs) => {
 
         if (done) cancelAnimationFrame(rafRef.current);
 
-        const state = reactiveAsciiStateRef.current;
-        reactiveAsciiStateRef.current.pos++;
+        console.log(done);
 
-        let trimmedContent = '';
+        // const state = reactiveAsciiStateRef.current;
+        // reactiveAsciiStateRef.current.pos++;
 
-        const endIdx = whitespace.length * state.pos;
+        // let trimmedContent = '';
 
-        const rightWhitespace = textPlaceholder.substring(endIdx);
+        // const endIdx = whitespace.length * state.pos;
 
-        if (reactiveAsciiStateRef.current.pos >= 0) {
-          trimmedContent = state.asciiText.substring(0, reactiveAsciiStateRef.current.pos);
+        // const rightWhitespace = textPlaceholder.substring(endIdx);
+
+        for (const animation of reactiveAnimations) {
+          animation();
         }
 
-        if (caret && caretAnimations) {
-          reactiveAscii.innerHTML = `${trimmedContent}&nbsp;`;
-          asciiAnimations.push(caret);
-          reactiveAscii.innerHTML += rightWhitespace;
-        }
+        // if (reactiveAsciiStateRef.current.pos >= 0) {
+        //   trimmedContent = state.asciiText.substring(0, reactiveAsciiStateRef.current.pos);
+        // }
+
+        // if (caret && caretAnimations) {
+        //   reactiveAscii.innerHTML = `${trimmedContent}&nbsp;`;
+        //   asciiAnimations.push(caret);
+        //   reactiveAscii.innerHTML += rightWhitespace;
+        // }
 
         // if (caretAnimations && !typing) {
         //   // console.log(elapsedBlinkFrame,blinkFrames,frame)
@@ -114,9 +141,9 @@ export const useReactiveAscii = ({ asciiText, fps }: UseReactiveAsciiArgs) => {
         //   }
         // }
 
-        if (reactiveAsciiStateRef.current.pos === state.asciiText.length) {
-          done = true;
-        }
+        // if (reactiveAsciiStateRef.current.pos === state.asciiText.length) {
+        //   done = true;
+        // }
       }
 
       if (!done) {

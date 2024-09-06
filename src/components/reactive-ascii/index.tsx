@@ -4,15 +4,26 @@ import { cn } from '@/lib/utils';
 import { useReactiveAscii } from '@/components/reactive-ascii/use-reactive-ascii';
 
 import { Caret } from '@/components/caret';
+import {
+  ReactiveAnimation,
+  ReactiveAnimationConfig,
+  reactiveTypewriterAnimation
+} from '@/components/reactive-ascii/reactive-animation';
 
 interface ReactiveAsciiProps {
   children: string;
   fps?: number;
   className?: string;
+  animations: ReactiveAnimation[];
 }
 
-export const ReactiveAscii = ({ children: asciiText, className, fps = 24 }: ReactiveAsciiProps) => {
-  const [reactiveAsciiRef, caretRef] = useReactiveAscii({ asciiText, fps });
+export const ReactiveAscii = ({
+  children: asciiText,
+  className,
+  fps = 24,
+  animations = [reactiveTypewriterAnimation]
+}: ReactiveAsciiProps) => {
+  const [reactiveAsciiRef, caretRef] = useReactiveAscii({ asciiText, fps,animations });
 
   return (
     <>
