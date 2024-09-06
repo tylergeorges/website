@@ -38,12 +38,6 @@ export const randomSymbolsAnmiation: ReactiveAnimation = ({ canvas, finish, text
   let currentIteration = 0;
 
   const run = () => {
-    if (currentIteration === ASCII_SYMBOLS.length) {
-      finish();
-
-      return;
-    }
-
     const currentSymbol = ASCII_SYMBOLS[currentIteration];
 
     const randomizedText = text
@@ -67,15 +61,20 @@ export const randomSymbolsAnmiation: ReactiveAnimation = ({ canvas, finish, text
       canvas.append(cursor);
     }
 
+    if (currentIteration === ASCII_SYMBOLS.length) {
+      finish();
+    }
+
     currentIteration += 1;
   };
 
   const restart = () => {
     currentIteration = 0;
-    run();
+
+    return run;
   };
 
-  return createReactiveAnimation({ run, restart });
+  return { run, restart };
 };
 
 // eslint-disable-next-line arrow-body-style
@@ -129,6 +128,7 @@ export const reactiveTypewriterAnimation: ReactiveAnimation = config => {
   };
 
   const restart = () => {
+    caret.style.opacity = '1';
     animationPos = 0;
 
     return run;

@@ -4,7 +4,6 @@
 
 import { useRef, useState } from 'react';
 
-import { useAsciiAnimations } from '@/components/reactive-ascii/use-ascii-animations';
 import { useIsomorphicLayoutEffect } from '@/hooks/use-isomorphic-layout-effect';
 import { ReactiveAnimation } from '@/components/reactive-ascii/reactive-animation';
 
@@ -30,7 +29,10 @@ interface ReactiveAsciiState {
 }
 
 export const useReactiveAscii = ({ asciiText, fps, animations }: UseReactiveAsciiArgs) => {
+  const [playing, setPlaying] = useState(true);
   const cachedAnimations = useRef(animations);
+  const reactiveAsciiRef = useRef<HTMLElement>(null);
+  const rafRef = useRef<number>(0);
 
   useIsomorphicLayoutEffect(() => {
     cachedAnimations.current = animations;
@@ -45,20 +47,19 @@ export const useReactiveAscii = ({ asciiText, fps, animations }: UseReactiveAsci
     animationIdx: 0
   });
 
-  const [playing, setPlaying] = useState(true);
-
-  const rafRef = useRef<number>(0);
-
   const reactiveAsciiController = useRef<UseReactiveAsciiController>({
     togglePlayingState: () => {
       // setPlaying(prev => !prev);
 
-      const isDoneAnimating = reactiveAsciiStateRef.current.animationIdx === animations.length - 1;
+      const isDoneAnimating = reactiveAsciiStateRef.current.animationIdx === animations.length ;
 
-      if (!isDoneAnimating) {
+      if (isDoneAnimating) {
         reactiveAsciiStateRef.current.animationIdx = 0;
-        reactiveAsciiStateRef.current.playing = !reactiveAsciiStateRef.current.playing;
 
+        reactiveAsciiStateRef.current.playing = true;
+        setPlaying(true);
+      } else {
+        reactiveAsciiStateRef.current.playing = !reactiveAsciiStateRef.current.playing;
         setPlaying(prev => !prev);
       }
     },
@@ -75,20 +76,15 @@ export const useReactiveAscii = ({ asciiText, fps, animations }: UseReactiveAsci
     }
   });
 
-  const [reactiveAsciiRef, asciiAnimationsRef] = useAsciiAnimations();
-  // const [caretRef, caretAnimationsRef] = useAsciiAnimations();
-
   useIsomorphicLayoutEffect(() => {
     const animations = cachedAnimations.current;
 
     let done = false;
-    // let done = reactiveAsciiStateRef.current.animationIdx === animations.length
 
     let start: number;
 
     let frame = -1;
 
-    const asciiAnimations = asciiAnimationsRef.current;
     const reactiveAscii = reactiveAsciiRef.current;
 
     let delay = 1000 / reactiveAsciiStateRef.current.fps;
@@ -130,7 +126,7 @@ export const useReactiveAscii = ({ asciiText, fps, animations }: UseReactiveAsci
     const reactiveAnimations = reactiveAsciiStateRef.current.animations;
 
     const animate = (timestamp: number) => {
-      if (!asciiAnimations || !reactiveAscii) {
+      if (!reactiveAscii) {
         cancelAnimationFrame(rafRef.current);
 
         return;
