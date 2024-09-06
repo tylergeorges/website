@@ -6,9 +6,11 @@
 
 @layer base {
   :root {
-    --background: 0 0 0;
+    --char-width: 9.6;
 
-    --foreground: 221 225 230;
+    --background: 24 24 24;
+
+    --foreground: 245 245 240;
     --foreground-subtle: 118 118 118;
     --foreground-very-subtle: 38 38 38;
 
@@ -76,6 +78,24 @@
   }
 }
 
+@media (min-width: 768px) {
+  :root {
+    --font-size: 14px;
+    --line-height: 19px;
+    --letter-spacing: 0.44px;
+    --char-width: 8.4;
+  }
+}
+
+@media (min-width: 1100px) {
+  :root {
+    --font-size: 16px;
+    --line-height: 21px;
+    --letter-spacing: 0.54px;
+    --char-width: 9.6;
+  }
+}
+
 @layer base {
   html {
     @apply size-full scroll-smooth;
@@ -86,6 +106,7 @@
   }
 
   body {
+    font-size: calc(var(--char-width) / 16 * 100%);
     @apply size-full bg-background text-foreground;
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;

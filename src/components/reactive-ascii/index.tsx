@@ -1,8 +1,9 @@
 'use client';
 
-import { useReactiveAscii } from '@/components/reactive-ascii/use-reactive-ascii';
 import { cn } from '@/lib/utils';
-import React from 'react';
+import { useReactiveAscii } from '@/components/reactive-ascii/use-reactive-ascii';
+
+import { Caret } from '@/components/caret';
 
 interface ReactiveAsciiProps {
   children: string;
@@ -10,12 +11,19 @@ interface ReactiveAsciiProps {
   className?: string;
 }
 
-export const ReactiveAscii = ({ children: asciiText, className, fps = 12 }: ReactiveAsciiProps) => {
-  const reactiveAsciiRef = useReactiveAscii({ asciiText, fps });
+export const ReactiveAscii = ({ children: asciiText, className, fps = 24 }: ReactiveAsciiProps) => {
+  const [reactiveAsciiRef, caretRef] = useReactiveAscii({ asciiText, fps });
 
   return (
-    <pre ref={reactiveAsciiRef} className={cn('bg-transparent font-pixels', className)}>
-      {asciiText}
-    </pre>
+    <span
+      ref={reactiveAsciiRef}
+      className={cn(
+        'relative h-[19.056338028169012px] w-full bg-transparent text-center text-[13.968173258003766px] font-medium leading-[19.056338028169012px] tracking-[0.5400000000000001px]',
+        className
+      )}
+    >
+      <Caret ref={caretRef} />
+      {/* {asciiText} */}
+    </span>
   );
 };
