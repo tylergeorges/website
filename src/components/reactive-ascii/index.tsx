@@ -14,25 +14,29 @@ import {
 
 interface ReactiveAsciiProps {
   children: string;
-  fps?: number;
+  // fps?: number;
   className?: string;
   animations: ReactiveAnimation[];
+  duration: number;
 }
 
 export const ReactiveAscii = ({
   children: asciiText,
   className,
-  fps = 60,
+  duration = 1000,
+  // fps = 60,
   animations = []
 }: ReactiveAsciiProps) => {
   const cachedAnimations = useMemo<ReactiveAnimation[]>(
-    () => (animations.length ? animations : [reactiveTypewriterAnimation, randomSymbolsAnmiation]),
+    () => animations,
+    // : [reactiveTypewriterAnimation, reactiveBackgroundAnimation, ],
     [animations]
   );
 
   const [reactiveAsciiRef, asciiController] = useReactiveAscii({
     asciiText,
-    fps,
+    // fps,
+    duration,
     animations: cachedAnimations
   });
 

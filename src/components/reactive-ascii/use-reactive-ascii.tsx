@@ -10,7 +10,8 @@ import { ReactiveAnimation } from '@/components/reactive-ascii/reactive-animatio
 interface UseReactiveAsciiArgs {
   asciiText: string;
   animations: ReactiveAnimation[];
-  fps: number;
+  duration: number;
+  // fps: number;
 }
 
 interface UseReactiveAsciiController {
@@ -22,13 +23,16 @@ type AnimationHandler = ReturnType<ReactiveAnimation>;
 interface ReactiveAsciiState {
   asciiText: string;
   pos: number;
-  fps: number;
+  duration: number;
+  // fps: number;
   animations: AnimationHandler[];
   animationIdx: number;
   playing: boolean;
 }
 
-export const useReactiveAscii = ({ asciiText, fps, animations }: UseReactiveAsciiArgs) => {
+const linear = (ms: number) => ms;
+
+export const useReactiveAscii = ({ asciiText, duration, animations }: UseReactiveAsciiArgs) => {
   const [playing, setPlaying] = useState(true);
   const cachedAnimations = useRef(animations);
   const reactiveAsciiRef = useRef<HTMLElement>(null);
@@ -41,7 +45,7 @@ export const useReactiveAscii = ({ asciiText, fps, animations }: UseReactiveAsci
   const reactiveAsciiStateRef = useRef<ReactiveAsciiState>({
     asciiText,
     animations: [],
-    fps,
+    duration,
     pos: -1,
     playing: true,
     animationIdx: 0
@@ -51,7 +55,7 @@ export const useReactiveAscii = ({ asciiText, fps, animations }: UseReactiveAsci
     togglePlayingState: () => {
       // setPlaying(prev => !prev);
 
-      const isDoneAnimating = reactiveAsciiStateRef.current.animationIdx === animations.length ;
+      const isDoneAnimating = reactiveAsciiStateRef.current.animationIdx === animations.length;
 
       if (isDoneAnimating) {
         reactiveAsciiStateRef.current.animationIdx = 0;
@@ -79,21 +83,21 @@ export const useReactiveAscii = ({ asciiText, fps, animations }: UseReactiveAsci
   useIsomorphicLayoutEffect(() => {
     const animations = cachedAnimations.current;
 
-    let done = false;
-
-    let start: number;
-
-    let frame = -1;
-
     const reactiveAscii = reactiveAsciiRef.current;
 
-    let delay = 1000 / reactiveAsciiStateRef.current.fps;
+    // const delay = 1000 / duration;
+    // let delay = duration;
+    // let delay = 1000 / reactiveAsciiStateRef.current.fps;
 
-    delay += asciiText.length;
+    // delay += asciiText.length;
+
+    let done = false;
 
     const finish = (idx: number) => {
       if (idx === animations.length - 1) {
         done = true;
+
+        console.log(idx);
 
         reactiveAsciiStateRef.current.playing = false;
         setPlaying(false);
@@ -117,7 +121,8 @@ export const useReactiveAscii = ({ asciiText, fps, animations }: UseReactiveAsci
             },
             canvas: reactiveAscii,
             text: asciiText,
-            fps
+            // fps
+            duration
           })
         );
       }
@@ -125,43 +130,108 @@ export const useReactiveAscii = ({ asciiText, fps, animations }: UseReactiveAsci
 
     const reactiveAnimations = reactiveAsciiStateRef.current.animations;
 
+    const totalDuration = 1000 / 60;
+
+    let prevTimestamp = 0;
+    let start: number;
+
+    const animationSpeed = asciiText.length;
+
     const animate = (timestamp: number) => {
-      if (!reactiveAscii) {
+      const now = timestamp;
+
+      if (start === undefined) {
+        start = now;
+      }
+
+      const elapsed = now - start;
+
+      const elapsedTimeSinceLastRender = timestamp - prevTimestamp;
+
+      if (elapsedTimeSinceLastRender > animationSpeed && reactiveAsciiStateRef.current.playing) {
+        // console.log(elapsedTimeSinceLastRender);
+
+        const currentAnimation = reactiveAnimations[reactiveAsciiStateRef.current.animationIdx];
+        currentAnimation.run(linear(now / duration));
+        prevTimestamp = timestamp;
+      }
+
+      if (done || (elapsed >= duration && !reactiveAsciiStateRef.current.playing)) {
         cancelAnimationFrame(rafRef.current);
 
         return;
       }
 
-      if (reactiveAsciiStateRef.current.playing) {
-        if (start === undefined) {
-          start = timestamp;
-        }
+      rafRef.current = requestAnimationFrame(animate);
+      //   cancelAnimationFrame(rafRef.current);
+      // }
 
-        const elapsed = timestamp - start;
-        const seg = Math.floor(elapsed / delay);
+      // if (startTime === undefined) {
+      //   startTime = ts;
+      // }
 
-        if (seg > frame) {
-          frame = seg;
+      // const runtime = ts - startTime;
 
-          if (done) cancelAnimationFrame(rafRef.current);
+      // const progress = Math.floor(runtime / 60);
 
-          const currentAnimation = reactiveAnimations[reactiveAsciiStateRef.current.animationIdx];
+      // const progress = runtime / 60;
+      // const progress = runtime / (duration/60);
 
-          currentAnimation.run();
-        }
+      // progress=Math.min(progress,1)
 
-        if (!done) {
-          rafRef.current = requestAnimationFrame(animate);
-        } else {
-          cancelAnimationFrame(rafRef.current);
-        }
-      } else {
-        cancelAnimationFrame(rafRef.current);
-      }
+      // console.log(progress, totalDuration);
+      // if (runtime < duration) {
+      //   const currentAnimation = reactiveAnimations[reactiveAsciiStateRef.current.animationIdx];
+      //   currentAnimation.run();
+
+      //   // if (!reactiveAsciiStateRef.current.playing) {
+      //   // cancelAnimationFrame(rafRef.current);
+      //   // } else {
+      //   rafRef.current = requestAnimationFrame(animate);
+      //   then = progress;
+      //   // }
+      // }
+      // };
+
+      // tick();
+
+      // if (done) {
+      //   cancelAnimationFrame(rafRef.current);
+      //   return;
+      // }
+
+      // if (!lastTime) {
+      //   lastTime = now;
+      // }
+
+      // const delta = (now - startTime) / (duration/totalDuration);
+      // const delta = Math.min((now - startTime) / duration, 1);
+      // console.log(delta);
+
+      // const elapsed = now - lastTime;
+      // const elapsed = now - lastTime;
+
+      // if (delta < 1) {
+      //   if (reactiveAsciiStateRef.current.playing) {
+      //     // if (elapsed > requiredElapsed && reactiveAsciiStateRef.current.playing) {
+      //     const currentAnimation = reactiveAnimations[reactiveAsciiStateRef.current.animationIdx];
+      //     currentAnimation.run();
+
+      //     // do stuff
+      //     // lastTime = now;
+      //   }
+      //   rafRef.current = requestAnimationFrame(animate);
+      // }
     };
 
-    rafRef.current = requestAnimationFrame(animate);
-
+    // animate();
+    // rafRef.current = (animate);
+    // animate(performance.now());
+    // rafRef.current = requestAnimationFrame(() => {
+    //   animate();
+    // });
+    animate();
+    // rafRef.current = requestAnimationFrame(animate);
     return () => {
       if (rafRef.current !== undefined) cancelAnimationFrame(rafRef.current);
     };

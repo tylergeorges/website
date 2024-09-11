@@ -1,3 +1,4 @@
+import { Caret, createReactiveCaret } from '@/components/reactive-ascii/caret';
 import { ASCII_SYMBOLS, updateChild } from '@/components/reactive-ascii/utils';
 
 /* eslint-disable no-plusplus */
@@ -9,7 +10,11 @@ export interface ReactiveAnimationConfig {
   /**
    * The fps of the animation. Default is 60.
    */
-  fps?: number;
+  duration?: number;
+  // /**
+  //  * The fps of the animation. Default is 60.
+  //  */
+  // fps?: number;
   /**
    * Callback to finish animation.
    */
@@ -21,7 +26,7 @@ export interface ReactiveAnimationConfig {
 }
 
 type CreateReactiveAnimation = (config: { run: () => void; restart: () => void }) => {
-  run: () => void;
+  run: (timestamp:number) => void;
   restart: () => void;
 };
 
@@ -83,43 +88,19 @@ export const reactiveTypewriterAnimation: ReactiveAnimation = config => {
 
   let animationPos = 0;
 
-  const whitespace = '&nbsp;';
-  const textPlaceholder = whitespace.repeat(text.length);
+  const caret = createReactiveCaret(canvas, text, false);
 
-  let caret = canvas.children.item(0) as HTMLElement | null;
-
-  if (!caret) {
-    const caretEl = document.createElement('span');
-    caretEl.className = 'absolute -ml-[1ch] h-[19.056338028169012px] w-[1ch] bg-foreground';
-    caret = caretEl;
-  }
-
-  if (canvas.children.length < 1) {
-    canvas.innerHTML += textPlaceholder;
-  }
+  caret.show();
 
   canvas.style.opacity = '1';
 
-  let trimmedContent = '';
-
   const run = () => {
-    const endIdx = whitespace.length * animationPos;
-
-    const rightWhitespace = textPlaceholder.substring(endIdx);
-
-    if (animationPos >= 0) {
-      trimmedContent = text.substring(0, animationPos);
-    }
-
-    canvas.innerHTML = `${trimmedContent}&nbsp;`;
-    canvas.append(caret);
-
-    canvas.innerHTML += rightWhitespace;
+    caret.forward();
 
     if (animationPos === text.length) {
-      caret.style.opacity = '0';
+      caret.hide();
 
-      updateChild(canvas, caret);
+      updateChild(canvas, caret.caret);
 
       finish();
     }
@@ -128,8 +109,45 @@ export const reactiveTypewriterAnimation: ReactiveAnimation = config => {
   };
 
   const restart = () => {
-    caret.style.opacity = '1';
     animationPos = 0;
+    caret.restart();
+
+    return run;
+  };
+
+  return {
+    run,
+    restart
+  };
+};
+
+// eslint-disable-next-line arrow-body-style
+export const reactiveBackgroundAnimation: ReactiveAnimation = config => {
+  const { text, canvas, finish } = config;
+
+  let animationPos = 0;
+
+  const caret = createReactiveCaret(canvas, text, false);
+
+  const run = () => {
+    caret.expand();
+
+    const isDone = animationPos === text.length;
+
+    if (isDone) {
+      // caret.collapse();
+
+      updateChild(canvas, caret.caret);
+
+      finish();
+    }
+
+    animationPos += 1;
+  };
+
+  const restart = () => {
+    animationPos = 0;
+    caret.restart();
 
     return run;
   };

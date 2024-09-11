@@ -3,7 +3,7 @@ import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 
 import { siteConfig } from '@/config/site';
-import { fontMono, fontSans, fontPixels, fontPixelsHeading } from '@/lib/fonts';
+import { fontMono, fontSans, fontAbc, fontPixels } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 
 import { ModalRenderer } from '@/components/modal';
@@ -35,9 +35,9 @@ export default function RootLayout({
         className={cn(
           'flex-1 bg-background font-mono text-foreground antialiased vertical',
           fontMono.variable,
+          fontAbc.variable,
           fontSans.variable,
-          fontPixels.variable,
-          fontPixelsHeading.variable
+          fontPixels.variable
         )}
       >
         <ModalRenderer />

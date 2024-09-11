@@ -78,6 +78,24 @@
   }
 }
 
+@font-face {
+  font-family: abc;
+  src: url(/fonts/ABCDiatypeVariable.woff) format('woff');
+  src: url(/fonts/ABCDiatypeVariable.woff2) format('woff2');
+  font-weight: 100 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: abc-v;
+  src: url(/fonts/ABCDiatypeVariable.woff) format('woff');
+  src: url(/fonts/ABCDiatypeVariable.woff2) format('woff2');
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 @media (min-width: 768px) {
   :root {
     --font-size: 14px;
@@ -85,6 +103,10 @@
     --letter-spacing: 0.44px;
     --char-width: 8.4;
   }
+}
+
+html ::selection {
+  @apply bg-foreground text-background;
 }
 
 @media (min-width: 1100px) {
@@ -96,8 +118,16 @@
   }
 }
 
+h1 {
+  /* font-size: 10vw; */
+  /* font-size: clamp(10vw, 1rem, 100px); */
+  font-variation-settings: 'wght' 730;
+  font-feature-settings: 'ss05';
+}
+
 @layer base {
   html {
+    font-variation-settings: 'MONO' 1;
     @apply size-full scroll-smooth;
   }
 
@@ -106,9 +136,18 @@
   }
 
   body {
-    font-size: calc(var(--char-width) / 16 * 100%);
-    @apply size-full bg-background text-foreground;
-    font-synthesis-weight: none;
+    --line: 19.838709677419356px;
+    --letter-spacing: 0.5400000000000001px;
+    --font-size: 14.55977011494253px;
+    font-variation-settings: 'MONO' 1;
+    /* font-size: var(--font-size); */
+
+    font-size: var(--font-size);
+    line-height: var(--line);
+    letter-spacing: var(--letter-spacing);
+    font-weight: 500;
+
+    @apply size-full flex-1 bg-background text-foreground vertical;
     text-rendering: optimizeLegibility;
   }
 }

@@ -135,8 +135,10 @@ const config: Config = {
       },
 
       fontFamily: {
-        sans: ['var(--font-geist-sans)', ...fontFamily.sans],
-        mono: ['var(--font-geist-mono)', ...fontFamily.mono],
+        // sans: ['var(--font-sans), monospace'],
+        sans: ['var(--font-geist-sans)'],
+        abc: ['var(--font-abc)'],
+        mono: ['var(--font-geist-mono), monospace', ...fontFamily.mono],
         pixels: ['var(--font-pixels)'],
         pixelsHeading: ['var(--font-pixels-heading)']
       }
