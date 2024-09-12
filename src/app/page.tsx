@@ -6,16 +6,21 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
 const Experience = () => (
-  <div className="col-span-1 col-start-1 col-end-1 horizontal">
-    <div className="aspect-square size-96 shrink-0 rounded-xl bg-indigo-400 horizontal center">
-      <Icons.WidgetBot className="size-16" />
+  <div className="col-span-3 w-full max-w-full items-start justify-between horizontal">
+    <div className="flex-[2]">
+      <div className="h-96 w-[46.4rem] shrink-0 bg-indigo-400 horizontal center">
+        <Icons.WidgetBot className="size-16" />
+      </div>
     </div>
 
-    <div className="prose-lg ml-12 self-end text-left vertical">
-      <h1 className="m-0 font-bold">WidgetBot</h1>
-      <p className="mt-0 font-mono text-foreground/60">Frontend Developer</p>
+    <p className="mt-0 max-w-[23.6rem] flex-[0.5] font-mono font-extralight text-foreground/40">
+      [001]
+    </p>
 
-      <p className="m-0 max-w-[60ch] text-base font-light text-foreground/60">
+    <div className="flex-[2] text-left vertical">
+      <h2 className="mb-0 mt-0 font-bold tracking-[-.01em]">WidgetBot</h2>
+
+      <p className="mt-0 max-w-[50ch] pt-5 font-mono text-sm font-light text-foreground/60">
         Enhanced user interactivity and responsiveness by developing dynamic UI components using
         React and Next.js, integrating Apollo GraphQL for efficient data fetching and real-time
         websocket connections.
@@ -26,53 +31,31 @@ const Experience = () => (
 
 export default function Home() {
   return (
-    <main className={cn('relative flex size-full flex-1 vertical', 'px-20 pt-32')}>
-      <div className="relative size-full flex-1 center vertical">
-        <div className="size-full flex-1 gap-20 overflow-auto text-center vertical">
-          {/* <ReactiveAscii >TEST   STRING</ReactiveAscii> */}
-          {/* <ReactiveHero>TYLER GEORGES</ReactiveHero> */}
-          {/* <p className="mono-title">TYLER GEORGES</p> */}
-          {/* <h1 className="text-center text-[10vw] font-black leading-normal tracking-tight">
-            tyler georges
-          </h1> */}
+    <main className="relative flex size-full flex-1 px-4 vertical">
+      <header className="py-5 font-mono text-foreground/40">tyler_georges</header>
 
-          <div className="size-full flex-1 justify-start gap-20 text-left text-2xl vertical">
-            <div className="justify-start gap-6 text-center text-2xl center vertical">
-              <div className="aspect-square size-12 bg-emerald-500 center vertical">
-                <h1 className="font-mono text-xl font-medium text-background">t</h1>
-              </div>
+      <div className="center vertical">
+        <h1 className="m-0 text-center text-[8rem]  up ">welcome</h1>
 
-              <div className="gap-12 vertical">
-                <div className="vertical">
-                  <h2 className="mb-0 text-xl font-bold">Tyler Georges</h2>
+        <div className="max-w-[60ch]">
+          <p className="mt-3  text-left font-mono text-sm text-foreground/40 uppercase">
+            im a software developer that loves creating
+          </p>
+        </div>
+      </div>
 
-                  <p className="mb-0 text-base text-foreground/40">
-                    Software Developer
-                    <br />
-                  </p>
-                </div>
-              </div>
-            </div>
+      <div className="relative size-full max-w-full flex-1 px-[calc(50vw_-_70.4rem)]">
+        <div className="items-baseline horizontal">
+          <h1 className="m-0 text-[8rem] leading-none tracking-[-.02em]">work</h1>
+          <p className="m-0 ml-3 self-end font-mono text-[11px] font-normal text-foreground/40">
+            [013]
+          </p>
+        </div>
+        {/* <ReactiveAscii >TEST   STRING</ReactiveAscii> */}
+        {/* <ReactiveHero>TYLER GEORGES</ReactiveHero> */}
 
-            <div className="size-full flex-1 vertical">
-              <div className="grid grid-cols-2 gap-x-24 gap-y-6">
-                <h3 className="col-start-1 col-end-1 font-mono text-lg font-light text-foreground/40">
-                  Experience
-                </h3>
-                <h3 className="col-start-2 font-mono text-lg font-light text-foreground/40">
-                  Projects
-                </h3>
-
-                <Experience />
-
-                <div className="col-start-2">
-                  <div className="">
-                    <div className="size-64 rounded-2xl bg-foreground"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="mt-[11.6rem] grid w-full grid-cols-3">
+          <Experience />
         </div>
 
         {/* <AsciiTrail/> */}

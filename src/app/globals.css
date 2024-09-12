@@ -96,38 +96,12 @@
   font-display: swap;
 }
 
-@media (min-width: 768px) {
-  :root {
-    --font-size: 14px;
-    --line-height: 19px;
-    --letter-spacing: 0.44px;
-    --char-width: 8.4;
-  }
-}
-
 html ::selection {
   @apply bg-foreground text-background;
 }
 
-@media (min-width: 1100px) {
-  :root {
-    --font-size: 16px;
-    --line-height: 21px;
-    --letter-spacing: 0.54px;
-    --char-width: 9.6;
-  }
-}
-
-h1 {
-  /* font-size: 10vw; */
-  /* font-size: clamp(10vw, 1rem, 100px); */
-  font-variation-settings: 'wght' 730;
-  font-feature-settings: 'ss05';
-}
-
 @layer base {
   html {
-    font-variation-settings: 'MONO' 1;
     @apply size-full scroll-smooth;
   }
 
@@ -136,36 +110,12 @@ h1 {
   }
 
   body {
-    --char-width: 8.102189781021897px;
-    --line: 17.451612903225808px;
-    --letter-spacing: 0.5400000000000001px;
-    /* --font-size: 14.55977011494253px; */
-    --font-size: 12.603649635036495px;
-    font-variation-settings: 'MONO' 1;
-    /* font-size: var(--font-size); */
-
-    font-size: var(--font-size);
-    /* font-size: calc(var(--char-width) / 16 * 100%); */
-    line-height: var(--line);
-    letter-spacing: var(--letter-spacing);
-    font-weight: 500;
-
+    font-variant-numeric: slashed-zero;
     @apply size-full flex-1 bg-background text-foreground vertical;
     text-rendering: optimizeLegibility;
+    font-feature-settings: 'ss05';
+    font-size: max(11px, 1.1rem);
   }
-}
-
-h3,
-ol,
-.preamble p,
-q,
-h1 {
-  font-size: calc(var(--font-size) * 4.2);
-  font-variation-settings: 'wght' 730;
-  line-height: calc(var(--line) * 3);
-  letter-spacing: -0.036em;
-  text-transform: none;
-  font-feature-settings: 'ss05';
 }
 
 @layer utilities {
@@ -243,4 +193,17 @@ h1 {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+html {
+  box-sizing: border-box;
+  overscroll-behavior: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -webkit-text-size-adjust: none;
+}
+
+h1 {
+  font-variation-settings: 'wght' 730;
+  letter-spacing: -0.032em;
 }

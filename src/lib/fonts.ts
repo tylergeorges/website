@@ -1,11 +1,15 @@
 import { GeistMono as FontMono } from 'geist/font/mono';
 import { GeistSans } from 'geist/font/sans';
 import localFont from 'next/font/local';
-import { Inter } from 'next/font/google';
+// import { JetBrains_Mono as FontMono } from 'next/font/google';
 
 // export const fontSans = GeistSans;
 
+// export const fontMono = FontMono;
 export const fontMono = FontMono;
+// export const fontMono = FontMono({
+//   variable: '--font-geist-mono'
+// });
 
 export const fontSans = GeistSans;
 // export const fontSans = Inter({ variable: '--font-geist-sans', display: 'swap' });
