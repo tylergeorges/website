@@ -1,9 +1,4 @@
-import { AsciiTrail } from '@/components/ascii-trail';
 import { Icons } from '@/components/icons';
-
-import { ReactiveHero } from '@/components/reactive-hero';
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
 
 const Experience = () => (
   <div className="col-span-3 w-full max-w-full items-start justify-between horizontal">
@@ -35,10 +30,10 @@ export default function Home() {
       <header className="py-5 font-mono text-foreground/40">tyler_georges</header>
 
       <div className="center vertical">
-        <h1 className="m-0 text-center text-[8rem]  up ">welcome</h1>
+        <h1 className="up m-0 text-center text-[8rem]">welcome</h1>
 
         <div className="max-w-[60ch]">
-          <p className="mt-3  text-left font-mono text-sm text-foreground/40 uppercase">
+          <p className="mt-3 text-left font-mono text-sm uppercase text-foreground/40">
             im a software developer that loves creating
           </p>
         </div>
@@ -51,14 +46,10 @@ export default function Home() {
             [013]
           </p>
         </div>
-        {/* <ReactiveAscii >TEST   STRING</ReactiveAscii> */}
-        {/* <ReactiveHero>TYLER GEORGES</ReactiveHero> */}
 
         <div className="mt-[11.6rem] grid w-full grid-cols-3">
           <Experience />
         </div>
-
-        {/* <AsciiTrail/> */}
       </div>
     </main>
   );
