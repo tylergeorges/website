@@ -7,7 +7,8 @@ import { Inter } from 'next/font/google';
 
 export const fontMono = FontMono;
 
-export const fontSans = Inter({ variable: '--font-geist-sans', display: 'swap' });
+export const fontSans = GeistSans;
+// export const fontSans = Inter({ variable: '--font-geist-sans', display: 'swap' });
 
 export const fontAbc = localFont({
   variable: '--font-abc',

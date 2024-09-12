@@ -1,5 +1,6 @@
 import { Caret, createReactiveCaret } from '@/components/reactive-ascii/caret';
 import { ASCII_SYMBOLS, updateChild } from '@/components/reactive-ascii/utils';
+import { sleep } from '@/lib/utils';
 
 /* eslint-disable no-plusplus */
 export interface ReactiveAnimationConfig {
@@ -25,8 +26,8 @@ export interface ReactiveAnimationConfig {
   canvas: HTMLElement;
 }
 
-type CreateReactiveAnimation = (config: { run: () => void; restart: () => void }) => {
-  run: (timestamp:number) => void;
+type CreateReactiveAnimation = (config: { run: () => Promise<void>; restart: () => void }) => {
+  run: (timestamp: number, paused: boolean) => Promise<void>;
   restart: () => void;
 };
 
@@ -94,18 +95,33 @@ export const reactiveTypewriterAnimation: ReactiveAnimation = config => {
 
   canvas.style.opacity = '1';
 
-  const run = () => {
-    caret.forward();
+  const run = async (timestamp: number, paused: boolean) => {
+    if (paused) return;
 
-    if (animationPos === text.length) {
-      caret.hide();
+    if (animationPos === 0) {
+      // caret.show();
+      await sleep(400);
+      await caret.blink(400);
+      await sleep(400);
+    }
+
+    if (animationPos - 1 === text.length) {
+      caret.show();
 
       updateChild(canvas, caret.caret);
+      await sleep(400);
+      await caret.blink(400);
+      await sleep(400);
+      await caret.blink(400);
 
       finish();
     }
 
+    // caret.hide()
+    await sleep(1000 / (60 + text.length));
+    caret.forward();
     animationPos += 1;
+    // caret.show();
   };
 
   const restart = () => {

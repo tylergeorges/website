@@ -6,11 +6,7 @@ import { cn } from '@/lib/utils';
 import { useReactiveAscii } from '@/components/reactive-ascii/use-reactive-ascii';
 
 import { Caret } from '@/components/caret';
-import {
-  randomSymbolsAnmiation,
-  ReactiveAnimation,
-  reactiveTypewriterAnimation
-} from '@/components/reactive-ascii/reactive-animation';
+import { ReactiveAnimation } from '@/components/reactive-ascii/reactive-animation';
 
 interface ReactiveAsciiProps {
   children: string;
@@ -52,7 +48,10 @@ export const ReactiveAscii = ({
         </button>
 
         <button
-          onClick={asciiController.current.togglePlayingState}
+          onClick={e => {
+            e.preventDefault();
+            asciiController.current.togglePlayingState();
+          }}
           type="button"
           className="top-0 mt-7 bg-foreground px-2 text-base text-background"
         >
@@ -60,18 +59,17 @@ export const ReactiveAscii = ({
         </button>
       </div>
 
-      <span
-        ref={reactiveAsciiRef}
-        className={cn(
-          'relative h-[19.056338028169012px] w-full whitespace-pre bg-transparent text-center text-[13.968173258003766px] font-medium leading-[19.056338028169012px] tracking-[0.5400000000000001px]',
-          className
-        )}
-      >
+      <span ref={reactiveAsciiRef} className={cn('relative font-medium uppercase', className)}>
         <Caret />
-
-        {asciiText.split('').map((char, idx) => (
-          <Fragment key={`${char}_${idx}`}>&nbsp;</Fragment>
-        ))}
+        {asciiText
+          .split('')
+          .map((char, idx) =>
+            char === ' ' ? (
+              <Fragment key={`${char}-${idx}`}>{'\xA0\xA0'}</Fragment>
+            ) : (
+              <Fragment key={`${char}-${idx}`}>{'\xA0'}</Fragment>
+            )
+          )}
       </span>
     </>
   );

@@ -1,3 +1,5 @@
+import { sleep } from '@/lib/utils';
+
 export class Caret {
   smooth: boolean;
 
@@ -68,36 +70,18 @@ export class Caret {
   expand = () => {
     if (this.pos === this.text.length) return;
 
-    const startTranslate = this.caret.getBoundingClientRect().x - this.text.length * this.width;
+    // const startTranslate = this.caret.getBoundingClientRect().x - this.text.length * this.width;
 
     if (this.pos === 0) {
       this.hide();
 
       this.caret.style.left = `0px`;
       this.caret.style.zIndex = '-1';
-      // this.caret.parentElement.style.color = 'black';
-      // this.caret.style.left = `${this.width}px`;
-      // this.caret.style.left = `${startTranslate}px`;
-      //   this.caret.style.transform = `translateX(-${startTranslate}px)`; //   this.caret.style.transition = 'ease transform 300ms';
+
       this.show();
     }
 
-    const fullWidth = this.text.length * this.width;
-    // const fullWidth = this.text.length;
-
-    const scaleAmt = fullWidth / (this.pos + 1);
-    // const scaleAmt =
-    //   this.pos > this.text.length
-    //     ? this.pos / this.text.length
-    //     : this.text.length / Math.max(this.pos, 1);
-
-    console.log(scaleAmt);
-
-    const translate = this.pos / 2;
-
-    // this.caret.style.transform = `translateX(-${startTranslate}px)`;
     this.caret.style.transform = `scaleX(${this.pos + 4}) translateX(${this.pos - this.width}px)`;
-    // this.caret.style.transform = `scaleX(${scaleAmt}) translateX(-${startTranslate}px)`;
 
     this.pos += 1;
   };
@@ -110,9 +94,39 @@ export class Caret {
     this.caret.style.opacity = '1';
   };
 
+  blink = async (ms = 400) => {
+    this.hide();
+    await sleep(ms + 100);
+    this.show();
+  };
+
   restart = () => {
     this.pos = 0;
+
+    this.parent.childNodes.item(0).nodeValue = ' ';
+
     this.show();
+  };
+
+  parentPop = () => {
+    const { childNodes } = this.parent;
+
+    const nodes = childNodes;
+
+    let nodeIdx = nodes.length - 1;
+    let lastNode = nodes.item(nodeIdx);
+
+    if (!lastNode.nodeValue?.startsWith(' ')) {
+      nodeIdx -= 1;
+
+      lastNode = nodes.item(nodeIdx);
+    }
+
+    if (lastNode !== null) {
+      if (lastNode.nodeValue) {
+        this.parent.removeChild(lastNode);
+      }
+    }
   };
 
   forward = () => {
@@ -125,32 +139,42 @@ export class Caret {
 
       currentChar?.setAttribute('style', `style="opacity: '1'; display:inline-block;"`);
     } else {
-      const endIdx = this.whitespace.length * this.pos;
-
-      const rightWhitespace = this.textPlaceholder.substring(endIdx);
+      if (this.pos - 1 === this.text.length) return;
 
       if (this.pos >= 0) {
         this.trimmedContent = this.text.substring(0, this.pos);
       }
 
-      parent.innerHTML = `${this.trimmedContent}&nbsp;`;
-      parent.append(this.caret);
+      const newText = `${this.trimmedContent}`;
 
-      parent.innerHTML += rightWhitespace;
+      if (this.pos === 0) {
+        this.parent.prepend(newText);
+        this.parentPop();
+
+        this.pos += 1;
+      } else {
+        const beforeText = this.text.substring(0, this.pos - 1);
+
+        console.log(beforeText, this.pos);
+        // this.parentPop();
+        this.parent.childNodes.item(0).nodeValue = `${beforeText}${this.text[this.pos - 1]}\xA0`;
+        this.parentPop();
+
+        this.pos += 1;
+      }
     }
-
-    this.pos += 1;
   };
 }
 
 export const createReactiveCaret = (parent: HTMLElement, text: string, smooth = false) => {
   const caretIdx = parent.children.length > 1 ? 1 : 0;
+  // const caretIdx = parent.children.length > 1 ? 1 : 0;
 
   let caret = parent.children.item(caretIdx) as HTMLElement | null;
 
   if (!caret) {
-    const caretEl = document.createElement('span');
-    caretEl.className = 'absolute -ml-[1ch] h-[19.056338028169012px] w-[1ch] bg-foreground';
+    const caretEl = document.createElement('i');
+    caretEl.className = 'absolute -ml-[1ch] h-[19.056338028169012px] w-[1rem] bg-foreground z-10';
     caret = caretEl;
   }
 

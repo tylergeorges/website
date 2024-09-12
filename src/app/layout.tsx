@@ -33,7 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          'flex-1 bg-background font-mono text-foreground antialiased vertical',
+          'flex-1 bg-background font-sans text-foreground antialiased vertical',
           fontMono.variable,
           fontAbc.variable,
           fontSans.variable,

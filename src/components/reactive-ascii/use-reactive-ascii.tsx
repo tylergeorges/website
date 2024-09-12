@@ -55,7 +55,9 @@ export const useReactiveAscii = ({ asciiText, duration, animations }: UseReactiv
     togglePlayingState: () => {
       // setPlaying(prev => !prev);
 
-      const isDoneAnimating = reactiveAsciiStateRef.current.animationIdx === animations.length;
+      const isDoneAnimating =
+        reactiveAsciiStateRef.current.animationIdx === animations.length - 1 &&
+        !reactiveAsciiStateRef.current.playing;
 
       if (isDoneAnimating) {
         reactiveAsciiStateRef.current.animationIdx = 0;
@@ -130,14 +132,17 @@ export const useReactiveAscii = ({ asciiText, duration, animations }: UseReactiv
 
     const reactiveAnimations = reactiveAsciiStateRef.current.animations;
 
-    const totalDuration = 1000 / 60;
+    // const totalDuration = 1000 / 60;
 
     let prevTimestamp = 0;
     let start: number;
 
-    const animationSpeed = asciiText.length;
+    const textLen = asciiText.length;
 
-    const animate = (timestamp: number) => {
+    // const animationSpeed = 200;
+    const animationSpeed = 1000 / 60 + textLen;
+
+    const animate = async (timestamp: number) => {
       const now = timestamp;
 
       if (start === undefined) {
@@ -148,12 +153,20 @@ export const useReactiveAscii = ({ asciiText, duration, animations }: UseReactiv
 
       const elapsedTimeSinceLastRender = timestamp - prevTimestamp;
 
-      if (elapsedTimeSinceLastRender > animationSpeed && reactiveAsciiStateRef.current.playing) {
-        // console.log(elapsedTimeSinceLastRender);
+      if (elapsedTimeSinceLastRender > animationSpeed) {
+        if (reactiveAsciiStateRef.current.playing) {
+          const currentAnimation = reactiveAnimations[reactiveAsciiStateRef.current.animationIdx];
 
-        const currentAnimation = reactiveAnimations[reactiveAsciiStateRef.current.animationIdx];
-        currentAnimation.run(linear(now / duration));
-        prevTimestamp = timestamp;
+          await currentAnimation.run(
+            linear(now / duration),
+            !reactiveAsciiStateRef.current.playing
+          );
+
+          prevTimestamp = timestamp;
+        } else {
+          cancelAnimationFrame(rafRef.current);
+          start = undefined;
+        }
       }
 
       if (done || (elapsed >= duration && !reactiveAsciiStateRef.current.playing)) {
@@ -163,74 +176,10 @@ export const useReactiveAscii = ({ asciiText, duration, animations }: UseReactiv
       }
 
       rafRef.current = requestAnimationFrame(animate);
-      //   cancelAnimationFrame(rafRef.current);
-      // }
-
-      // if (startTime === undefined) {
-      //   startTime = ts;
-      // }
-
-      // const runtime = ts - startTime;
-
-      // const progress = Math.floor(runtime / 60);
-
-      // const progress = runtime / 60;
-      // const progress = runtime / (duration/60);
-
-      // progress=Math.min(progress,1)
-
-      // console.log(progress, totalDuration);
-      // if (runtime < duration) {
-      //   const currentAnimation = reactiveAnimations[reactiveAsciiStateRef.current.animationIdx];
-      //   currentAnimation.run();
-
-      //   // if (!reactiveAsciiStateRef.current.playing) {
-      //   // cancelAnimationFrame(rafRef.current);
-      //   // } else {
-      //   rafRef.current = requestAnimationFrame(animate);
-      //   then = progress;
-      //   // }
-      // }
-      // };
-
-      // tick();
-
-      // if (done) {
-      //   cancelAnimationFrame(rafRef.current);
-      //   return;
-      // }
-
-      // if (!lastTime) {
-      //   lastTime = now;
-      // }
-
-      // const delta = (now - startTime) / (duration/totalDuration);
-      // const delta = Math.min((now - startTime) / duration, 1);
-      // console.log(delta);
-
-      // const elapsed = now - lastTime;
-      // const elapsed = now - lastTime;
-
-      // if (delta < 1) {
-      //   if (reactiveAsciiStateRef.current.playing) {
-      //     // if (elapsed > requiredElapsed && reactiveAsciiStateRef.current.playing) {
-      //     const currentAnimation = reactiveAnimations[reactiveAsciiStateRef.current.animationIdx];
-      //     currentAnimation.run();
-
-      //     // do stuff
-      //     // lastTime = now;
-      //   }
-      //   rafRef.current = requestAnimationFrame(animate);
-      // }
     };
 
-    // animate();
-    // rafRef.current = (animate);
-    // animate(performance.now());
-    // rafRef.current = requestAnimationFrame(() => {
-    //   animate();
-    // });
-    animate();
+    animate(performance.now());
+
     // rafRef.current = requestAnimationFrame(animate);
     return () => {
       if (rafRef.current !== undefined) cancelAnimationFrame(rafRef.current);

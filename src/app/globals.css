@@ -136,13 +136,16 @@ h1 {
   }
 
   body {
-    --line: 19.838709677419356px;
+    --char-width: 8.102189781021897px;
+    --line: 17.451612903225808px;
     --letter-spacing: 0.5400000000000001px;
-    --font-size: 14.55977011494253px;
+    /* --font-size: 14.55977011494253px; */
+    --font-size: 12.603649635036495px;
     font-variation-settings: 'MONO' 1;
     /* font-size: var(--font-size); */
 
     font-size: var(--font-size);
+    /* font-size: calc(var(--char-width) / 16 * 100%); */
     line-height: var(--line);
     letter-spacing: var(--letter-spacing);
     font-weight: 500;
@@ -150,6 +153,19 @@ h1 {
     @apply size-full flex-1 bg-background text-foreground vertical;
     text-rendering: optimizeLegibility;
   }
+}
+
+h3,
+ol,
+.preamble p,
+q,
+h1 {
+  font-size: calc(var(--font-size) * 4.2);
+  font-variation-settings: 'wght' 730;
+  line-height: calc(var(--line) * 3);
+  letter-spacing: -0.036em;
+  text-transform: none;
+  font-feature-settings: 'ss05';
 }
 
 @layer utilities {

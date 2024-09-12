@@ -11,7 +11,10 @@ export const Caret = forwardRef<HTMLSpanElement, CaretProps>(({ className }, ref
   <span
     ref={ref}
     // style={{opacity:0}}
-    className={cn('absolute -ml-[1ch] h-[19.056338028169012px] w-[1ch] bg-foreground', className)}
+    className={cn(
+      'absolute -ml-[1ch] h-[var(--line)] w-[1ch] bg-foreground text-transparent',
+      className
+    )}
   />
 ));
 

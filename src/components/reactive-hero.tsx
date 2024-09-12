@@ -13,7 +13,7 @@ interface ReactiveHeroProps {
 
 export const ReactiveHero = ({ children }: ReactiveHeroProps) => (
   <ReactiveAscii
-    animations={[reactiveTypewriterAnimation, reactiveBackgroundAnimation]}
+    animations={[reactiveTypewriterAnimation]}
     // animations={[reactiveTypewriterAnimation, randomSymbolsAnmiation]}
   >
     {children}
