@@ -6,19 +6,26 @@ import localFont from 'next/font/local';
 // export const fontSans = GeistSans;
 
 // export const fontMono = FontMono;
-export const fontMono = FontMono;
-// export const fontMono = FontMono({
-//   variable: '--font-geist-mono'
-// });
 
-export const fontSans = GeistSans;
+export const fontSans = localFont({
+  src: '../app/fonts/GeistVF.woff',
+  variable: '--font-sans',
+  display: 'swap',
+
+});
+
+export const fontMono = localFont({
+  src: '../app/fonts/GeistMonoVF.woff',
+  variable: '--font-mono',
+  display: 'swap',
+});
 // export const fontSans = Inter({ variable: '--font-geist-sans', display: 'swap' });
 
 export const fontAbc = localFont({
   variable: '--font-abc',
   src: [
     {
-      path: '../../public/fonts/ABCDiatypeVariable.woff2'
+      path: '../app/fonts/ABCDiatypeVariable.woff2'
     }
   ],
   display: 'swap'
@@ -46,6 +53,6 @@ export const fontAbc = localFont({
 
 export const fontPixels = localFont({
   variable: '--font-pixels',
-  src: '../../public/fonts/DepartureMono-Regular.otf',
+  src: '../app/fonts/DepartureMono-Regular.otf',
   display: 'swap'
 });

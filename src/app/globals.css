@@ -6,25 +6,25 @@
 
 @layer base {
   :root {
-    --char-width: 9.6;
+    --font-geist-mono: 'geist-mono';
 
-    --background: 24 24 24;
+    --background: 28 28 28;
 
-    --foreground: 245 245 240;
+    --foreground: 238 238 238;
     --foreground-subtle: 118 118 118;
     --foreground-very-subtle: 38 38 38;
 
-    --primary: 255 95 135;
-    --primary-foreground: var(--background);
+    --primary: 255 92 67;
+    --primary-foreground: 34 34 34;
 
-    --secondary: 78 78 78;
-    --secondary-foreground: var(--primary-foreground);
+    --secondary: 170 170 170;
+    --secondary-foreground: var(--primary);
 
     --popover: var(--gray-950);
     --popover-foreground: var(--primary);
 
-    --card: 78 78 78;
-    --card-foreground: var(--foreground);
+    --card: var(--foreground);
+    --card-foreground: var(--background);
 
     --border: var(--foreground);
     --input: var(--secondary);
@@ -32,11 +32,6 @@
     --ring: var(--primary);
 
     --radius: 0.5rem;
-
-    --normal-mode: var(--primary);
-    --visual-mode: 190 149 255;
-    --command-mode: 66 190 101;
-    --insert-mode: 120 169 255;
   }
 }
 
@@ -80,8 +75,7 @@
 
 @font-face {
   font-family: abc;
-  src: url(/fonts/ABCDiatypeVariable.woff) format('woff');
-  src: url(/fonts/ABCDiatypeVariable.woff2) format('woff2');
+  src: url(./fonts/ABCDiatypeVariable.woff2) format('woff2');
   font-weight: 100 700;
   font-style: normal;
   font-display: swap;
@@ -89,8 +83,7 @@
 
 @font-face {
   font-family: abc-v;
-  src: url(/fonts/ABCDiatypeVariable.woff) format('woff');
-  src: url(/fonts/ABCDiatypeVariable.woff2) format('woff2');
+  src: url(./fonts/ABCDiatypeVariable.woff2) format('woff2');
   font-weight: 100 800;
   font-style: normal;
   font-display: swap;
@@ -113,8 +106,7 @@ html ::selection {
     font-variant-numeric: slashed-zero;
     @apply size-full flex-1 bg-background text-foreground vertical;
     text-rendering: optimizeLegibility;
-    font-feature-settings: 'ss05';
-    font-size: max(11px, 1.1rem);
+    /* font-feature-settings: 'ss05'; */
   }
 }
 
@@ -195,6 +187,17 @@ html ::selection {
   }
 }
 
+@font-face {
+  font-family: geist-mono;
+  src:
+    url(/fonts/geist-mono-latin.woff2) format('woff2-variations'),
+    url(/fonts/geist-mono-latin.woff) format('woff-variations'),
+    url(/fonts/geist-mono-latin.otf) format('opentype-variations');
+  font-display: swap;
+  font-style: normal;
+  font-weight: 100 900;
+}
+
 html {
   box-sizing: border-box;
   overscroll-behavior: none;
@@ -203,7 +206,7 @@ html {
   -webkit-text-size-adjust: none;
 }
 
-h1 {
+/* h1 {
   font-variation-settings: 'wght' 730;
   letter-spacing: -0.032em;
-}
+} */

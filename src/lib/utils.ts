@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 import { ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -12,3 +13,13 @@ export const isSpace = (key: string) => key === ' ';
 
 // eslint-disable-next-line no-promise-executor-return
 export const sleep = async (ms: number) => new Promise(res => setTimeout(res, ms));
+
+export const arr = (len: number) => {
+  const x: number[] = [];
+
+  for (let i = 0; i < len; i++) {
+    x[i] = i;
+  }
+
+  return x;
+};

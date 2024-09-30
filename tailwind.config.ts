@@ -1,20 +1,50 @@
 import type { Config } from 'tailwindcss';
 import { fontFamily } from 'tailwindcss/defaultTheme';
-
+import TailwindFluid, { extract } from 'fluid-tailwind';
 import TailwindTypography from '@tailwindcss/typography';
+import reset from 'tw-reset';
+
+import { screens as _screens } from 'tw-reset/defaultTheme';
 import { TailwindChildren, TailwindFlexible } from './src/lib/tailwind/plugins';
 
+const { '2xl': _, ...screensInRem } = _screens;
+
+// Things that need to be exported on the client
+
+export const screens = {
+  ...screensInRem,
+  xs: '26rem',
+  md: '53.75rem'
+};
+
 const config: Config = {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}'
-  ],
+  presets: [reset],
+
+  content: {
+    files: [
+      './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+      './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+      './src/app/**/*.{js,ts,jsx,tsx,mdx}'
+    ],
+    extract
+  },
   theme: {
+    container: () => {
+      const { xs, ...screensWithoutXs } = screens;
+
+      return {
+        center: true,
+        screens: screensWithoutXs
+      };
+    },
+    screens,
+
     extend: {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'to-dark':
+          'linear-gradient(to bottom,transparent,rgba(0,0,0,.7) 50%,rgba(0,0,0,0.9) 75%,rgba(0,0,0,0.9))'
       },
 
       typography: () => ({
@@ -56,55 +86,23 @@ const config: Config = {
         }
       }),
 
-      // gap: {
-      //   '0': '0px',
-      //   '0.5': '1px',
-      //   '1': '3px',
-      //   '1.5': '5px',
-      //   '2': '7px',
-      //   '2.5': '9px',
-      //   '3': '13px',
-      //   '4': '15px',
-      //   '5': '21px',
-      //   '6': '25px',
-      //   '7': '30px'
-      // },
+      aspectRatio: {
+        golden: '1.618'
+      },
 
-      // spacing: {
-      //   '0': '0px',
-      //   '0.5': '1px',
-      //   '1': '3px',
-      //   '1.5': '5px',
-      //   '2': '7px',
-      //   '2.5': '9px',
-      //   '3': '13px',
-      //   '4': '15px',
-      //   '5': '21px',
-      //   '6': '25px',
-      //   '7': '30px'
-      // },
+      borderRadius: {
+        '2.5cqw': '2.5cqw'
+      },
 
-      // fontSize: {
-      //   DEFAULT: '16.5px',
-      //   sm: '11px',
-      //   base: '16.5px',
-      //   lg: '22px',
-      //   xl: '33px',
-      //   '2xl': '55px',
-      //   '3xl': '66px',
-      //   '4xl': '88px',
-      //   '5xl': '121px'
-      // },
+      maxWidth: {
+        prose: '43rem' // the default 65ch seemingly waits for the font-face to load, which causes a FOUC
+      },
 
       colors: {
         border: 'rgb(var(--border) / <alpha-value>)',
         input: 'rgb(var(--input) / <alpha-value>)',
         ring: 'rgb(var(--ring) / <alpha-value>)',
         background: 'rgb(var(--background) / <alpha-value>)',
-        'insert-mode': 'rgb(var(--insert-mode) / <alpha-value>)',
-        'visual-mode': 'rgb(var(--visual-mode) / <alpha-value>)',
-        'command-mode': 'rgb(var(--command-mode) / <alpha-value>)',
-        'normal-mode': 'rgb(var(--normal-mode) / <alpha-value>)',
         foreground: {
           DEFAULT: 'rgb(var(--foreground) / <alpha-value>)',
           subtle: 'rgb(var(--foreground-subtle) / <alpha-value>)',
@@ -128,17 +126,16 @@ const config: Config = {
         }
       },
 
-      borderRadius: {
-        lg: `var(--radius)`,
-        md: `calc(var(--radius) - 2px)`,
-        sm: 'calc(var(--radius) - 4px)'
-      },
-
       fontFamily: {
         // sans: ['var(--font-sans), monospace'],
-        sans: ['var(--font-geist-sans)', ...fontFamily.serif],
+        sans: [
+          `var(--font-sans), ${fontFamily.sans.join(', ')}`,
+          {
+            fontFeatureSettings: "'ss11', 'ss04'"
+          }
+        ],
         abc: ['var(--font-abc)'],
-        mono: ['var(--font-geist-mono)', ...fontFamily.mono],
+        mono: ['var(--font-mono)'],
         // mono: ['var(--font-geist-mono), monospace', ...fontFamily.mono],
         pixels: ['var(--font-pixels)'],
         pixelsHeading: ['var(--font-pixels-heading)']
@@ -146,7 +143,7 @@ const config: Config = {
     }
   },
 
-  plugins: [TailwindFlexible, TailwindTypography, TailwindChildren]
+  plugins: [TailwindFlexible, TailwindFluid, TailwindTypography, TailwindChildren]
 };
 
 export default config;
