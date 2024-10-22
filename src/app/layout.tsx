@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 
@@ -6,7 +6,8 @@ import { siteConfig } from '@/config/site';
 import { fontMono, fontSans, fontAbc, fontPixels } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 
-import { ModalRenderer } from '@/components/modal';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import Navbar from '@/components/navbar';
 
 export const metadata: Metadata = {
   title: {
@@ -24,6 +25,10 @@ export const metadata: Metadata = {
   creator: 'Tyler Georges'
 };
 
+export const viewport: Viewport = {
+  initialScale: 1
+};
+
 export default function RootLayout({
   children
 }: Readonly<{
@@ -33,15 +38,18 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          'flex-1 bg-background font-sans text-foreground antialiased vertical',
+          'mx-auto min-h-screen max-w-2xl flex-1 bg-background px-6 py-12 font-sans text-foreground antialiased vertical sm:py-24',
           fontMono.variable,
           fontAbc.variable,
           fontSans.variable,
           fontPixels.variable
         )}
       >
-        <ModalRenderer />
         <div className="flex-1">{children}</div>
+
+        <TooltipProvider delayDuration={0}>
+          <Navbar />
+        </TooltipProvider>
         <Analytics />
       </body>
     </html>

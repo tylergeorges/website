@@ -6,30 +6,30 @@
 
 @layer base {
   :root {
-    --font-geist-mono: 'geist-mono';
+    --background: 210 11.1% 3.53%;
+    --foreground: 0 0% 98%;
 
-    --background: 28 28 28;
+    --card: 210 11.1% 3.53%;
+    --card-foreground: 0 0% 98%;
 
-    --foreground: 238 238 238;
-    --foreground-subtle: 118 118 118;
-    --foreground-very-subtle: 38 38 38;
+    --popover: 210 11.1% 3.53%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 255 92 67;
-    --primary-foreground: 34 34 34;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
 
-    --secondary: 170 170 170;
-    --secondary-foreground: var(--primary);
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
 
-    --popover: var(--gray-950);
-    --popover-foreground: var(--primary);
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
 
-    --card: var(--foreground);
-    --card-foreground: var(--background);
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
 
-    --border: var(--foreground);
-    --input: var(--secondary);
-
-    --ring: var(--primary);
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
 
     --radius: 0.5rem;
   }
@@ -72,7 +72,7 @@
     @apply justify-between;
   }
 }
-
+/* 
 @font-face {
   font-family: abc;
   src: url(./fonts/ABCDiatypeVariable.woff2) format('woff2');
@@ -87,7 +87,7 @@
   font-weight: 100 800;
   font-style: normal;
   font-display: swap;
-}
+} */
 
 html ::selection {
   @apply bg-foreground text-background;
@@ -185,17 +185,6 @@ html ::selection {
   .text-balance {
     text-wrap: balance;
   }
-}
-
-@font-face {
-  font-family: geist-mono;
-  src:
-    url(/fonts/geist-mono-latin.woff2) format('woff2-variations'),
-    url(/fonts/geist-mono-latin.woff) format('woff-variations'),
-    url(/fonts/geist-mono-latin.otf) format('opentype-variations');
-  font-display: swap;
-  font-style: normal;
-  font-weight: 100 900;
 }
 
 html {

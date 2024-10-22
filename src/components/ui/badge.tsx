@@ -1,30 +1,25 @@
+'use client';
+
 import { forwardRef } from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
-import { cn } from '@/lib/utils';
-
 const badgeVariants = tv({
-  base: 'font-bp inline-flex w-fit items-center justify-center px-1 py-0.5  font-mono text-xs -tracking-[0.03em]',
+  base: 'relative z-10 inline-flex w-fit items-center justify-center rounded-md px-2.5 py-1 text-xs',
 
   variants: {
     variant: {
-      none: 'r',
-      outline: 'text-currentColor bg-transparent ring-1 ring-current',
-      // outline: 'border border-foreground/20 bg-transparent text-foreground/50',
+      none: '',
+      outline: 'border',
       ghost: 'bg-transparent',
-      fill: 'font-medium'
+      fill: ''
     },
 
     color: {
-      default: 'bg-primary text-primary',
-      secondary: 'text-secondary',
+      default: 'bg-primary text-primary-foreground',
+      secondary: 'border-muted-foreground/30 bg-muted-foreground/40 text-secondary-foreground40',
       white: 'text-white',
       orange: 'bg-orange-500 text-orange-500',
       red: 'text-red-500'
-    },
-
-    position: {
-      'top-right': 'absolute end-0 top-0 -me-2 -mt-1 flex size-3 p-0'
     }
   },
 
@@ -44,11 +39,7 @@ const badgeVariants = tv({
       color: 'red',
       className: 'bg-red-500 text-black'
     },
-    {
-      variant: 'fill',
-      color: 'secondary',
-      className: 'bg-secondary text-secondary-foreground'
-    },
+
     {
       variant: 'fill',
       color: 'white',
@@ -71,10 +62,11 @@ const badgeVariants = tv({
       className: 'bg-transparent'
     },
     {
-      variant: 'outline',
+      variant: 'ghost',
       color: 'secondary',
       className: 'bg-transparent'
     },
+
     {
       variant: 'outline',
       color: 'white',
@@ -83,8 +75,7 @@ const badgeVariants = tv({
   ],
 
   defaultVariants: {
-    color: 'default',
-    variant: 'outline'
+    color: 'default'
   }
 });
 
@@ -93,20 +84,17 @@ type BadgeVariants = VariantProps<typeof badgeVariants>;
 interface BadgeProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'color'>, BadgeVariants {}
 
 export const Badge = forwardRef<HTMLDivElement, React.PropsWithChildren<BadgeProps>>(
-  ({ className, children, variant, position, color, ...props }, ref) => (
+  ({ className, children, variant, color, ...props }, ref) => (
     <div
       {...props}
       className={badgeVariants({
         variant,
         color,
-        position,
         className
       })}
       ref={ref}
     >
-      {children || (
-        <span className="relative h-full animate-ping rounded-full bg-inherit tracking-tighter" />
-      )}
+      {children}
     </div>
   )
 );

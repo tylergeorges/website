@@ -1,108 +1,135 @@
-import { AsciiTrail } from '@/components/ascii-trail';
-import { Icons } from '@/components/icons';
+import Link from 'next/link';
 
-import { ReactiveHero } from '@/components/reactive-hero';
+import { BlurFade } from '@/components/magicui/blur-fade';
+import { ProjectCard } from '@/components/project-card';
+import { ResumeCard } from '@/components/resume-card';
+
 import { Badge } from '@/components/ui/badge';
-import { arr, cn } from '@/lib/utils';
+import { siteConfig } from '@/config/site';
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-const Card = ({ className, ...props }: CardProps) => (
-  <div className="ring-contrast group relative flex min-h-32 w-full flex-col justify-end gap-2 overflow-clip rounded-lg bg-foreground-very-subtle p-6 text-white">
-    <div
-      className={cn('size-full gap-4 overflow-clip horizontal center-v', className)}
-      {...props}
-    />
-  </div>
-);
-
-const Avatar = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      'mr-3 aspect-square size-10 bg-indigo-400 shrink-0 horizontal center child:aspect-square child:size-[18px]',
-      className
-    )}
-    {...props}
-  />
-);
-
-const Experience = () => (
-  <div className="inline-flex w-fit gap-4 rounded-xl font-medium">
-    <div className="w-full items-center px-4 horizontal">
-      <Avatar>
-        <Icons.WidgetBot />
-      </Avatar>
-
-      <div className="vertical">
-        <div className="justify-between horizontal">
-          <h2 className="m-0 text-sm text-foreground-subtle">WidgetBot</h2>
-          <Badge
-            variant="fill"
-            className="font-black tracking-tight ring-0"
-            // className="rounded-none ring-1 ring-orange-500 bg-transparent font-mono text-xs text-orange-500 font-bold"
-          >
-            Frontend
-          </Badge>
-        </div>
-
-        <p className="m-0 text-foreground truncate">
-          Created an embedable discord app that you can embed on your site.
-        </p>
-      </div>
-    </div>
-  </div>
-);
+const BLUR_FADE_DELAY = 0.04;
 
 export default function Home() {
   return (
-    <main className="relative flex size-full flex-1 px-4 center vertical">
-      <div className="mx-auto size-full flex-1 pt-32">
-        <div className="container size-full vertical">
-          <div className="font-mono text-base font-bold vertical ~py-8/16">
-            <h1 className="m-0">Tyler Georges</h1>
-
-            <span className="text-primary">software developer</span>
-            {/* <p className="m-0 text-foreground/40">
-              im a <span className="">software developer</span> that loves <span className='text-primary'>creating</span>
-            </p> */}
-          </div>
-
-          <div className="vertical ~gap-6/10">
-            <h1 className="sm:leading-tighter relative mb-3 text-6xl font-bold sm:text-8xl">
-              Experience
-              <span className="absolute font-pixels text-sm font-normal text-foreground-subtle">
-                [00]
-              </span>
-            </h1>
-            {/* <ReactiveAscii >TEST   STRING</ReactiveAscii> */}
-            {/* <ReactiveHero>TYLER GEORGES</ReactiveHero> */}
-
-            <div className="size-full flex-1 vertical">
-              <div>
-                <div className="w-fit gap-5 rounded-2xl bg-foreground/15 p-4 horizontal center">
-                  <div className="size-14 rounded-xl bg-indigo-500 horizontal center">
-                    <Icons.WidgetBot className="size-7 text-foreground" />
-                  </div>
-                  {/* <img src="/echochat-landing.png" className="size-20 aspect-square  object-cover" /> */}
-
-                  <div className="justify-start text-left vertical">
-                    <span className="text-sm font-medium text-foreground/60">
-                      Frontend Developer
-                    </span>
-                    <h1 className="text-2xl font-bold leading-none">WidgetBot</h1>
-                  </div>
-                </div>
-              </div>
-
-              {/* <div className="h-[42px] w-20 bg-primary" /> */}
+    <main className="flex min-h-[100dvh] flex-col space-y-10">
+      <section id="hero">
+        <div className="mx-auto w-full max-w-2xl space-y-8">
+          <div className="flex justify-between gap-2">
+            <div className="flex flex-1 flex-col space-y-1.5">
+              <BlurFade
+                delay={BLUR_FADE_DELAY}
+                className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
+                yOffset={8}
+              >
+                Hello, I&apos;m Tyler Georges
+              </BlurFade>
+              <BlurFade delay={BLUR_FADE_DELAY} className="max-w-[600px] md:text-xl" yOffset={8}>
+                Software Developer that loves building high performant applications.
+              </BlurFade>
             </div>
-
-            {/* <AsciiTrail/> */}
           </div>
         </div>
-      </div>
+      </section>
+      <section id="work">
+        <div className="flex min-h-0 flex-col gap-y-3">
+          <BlurFade delay={BLUR_FADE_DELAY * 5}>
+            <h2 className="text-xl font-bold">Work Experience</h2>
+          </BlurFade>
+
+          {siteConfig.work.map((work, id) => (
+            <BlurFade key={work.company} delay={BLUR_FADE_DELAY * 6 + id * 0.05}>
+              <ResumeCard
+                key={work.company}
+                logoUrl={work.logoUrl}
+                altText={work.company}
+                title={work.company}
+                subtitle={work.title}
+                href={work.href}
+                badges={work.badges}
+                period={`${work.start} - ${work.end ?? 'Present'}`}
+                description={work.description}
+              />
+            </BlurFade>
+          ))}
+        </div>
+      </section>
+      <section id="skills">
+        <div className="flex min-h-0 flex-col gap-y-3">
+          <BlurFade delay={BLUR_FADE_DELAY * 9}>
+            <h2 className="text-xl font-bold">Skills</h2>
+          </BlurFade>
+          <div className="flex flex-wrap gap-1">
+            {siteConfig.skills.map((skill, id) => (
+              <BlurFade key={skill} delay={BLUR_FADE_DELAY * 10 + id * 0.05}>
+                <Badge key={skill}>{skill}</Badge>
+              </BlurFade>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section id="projects">
+        <div className="w-full space-y-12 py-12">
+          <BlurFade delay={BLUR_FADE_DELAY * 11}>
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <div className="inline-block rounded-lg bg-foreground px-3 py-1 text-sm text-background">
+                  My Projects
+                </div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                  Check out my latest work
+                </h2>
+                <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  I&apos;ve worked on a variety of projects, from simple websites to complex web
+                  applications. Here are a few of my favorites.
+                </p>
+              </div>
+            </div>
+          </BlurFade>
+          <div className="mx-auto grid max-w-[800px] grid-cols-1 gap-3 sm:grid-cols-2">
+            {siteConfig.projects.map((project, id) => (
+              <BlurFade key={project.title} delay={BLUR_FADE_DELAY * 12 + id * 0.05}>
+                <ProjectCard
+                  href={project.href}
+                  key={project.title}
+                  title={project.title}
+                  description={project.description}
+                  dates={project.dates}
+                  tags={project.technologies}
+                  image={project.image}
+                  previewUrl={project.previewUrl}
+                  links={project.links}
+                />
+              </BlurFade>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section id="contact">
+        <div className="grid w-full items-center justify-center gap-4 px-4 py-12 text-center md:px-6">
+          <BlurFade delay={BLUR_FADE_DELAY * 16}>
+            <div className="space-y-3">
+              <div className="inline-block rounded-lg bg-foreground px-3 py-1 text-sm text-background">
+                Contact
+              </div>
+              <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Get in Touch</h2>
+              <p className="text-muted-foreground mx-auto max-w-[600px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                Want to chat? send me an&nbsp;
+                <Link
+                  href="mailto:tmg320v@gmail.com"
+                  target="_blank"
+                  className="text-blue-500 hover:underline"
+                >
+                  email.
+                </Link>
+                &nbsp;and I&apos;ll respond as soon as possible.
+              </p>
+            </div>
+          </BlurFade>
+        </div>
+      </section>
     </main>
   );
 }
-
+// tracking-[6px]
 // mt-[11.6rem]
+// text-[clamp(3rem,14vw,10rem)]

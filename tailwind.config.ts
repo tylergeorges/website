@@ -99,30 +99,36 @@ const config: Config = {
       },
 
       colors: {
-        border: 'rgb(var(--border) / <alpha-value>)',
-        input: 'rgb(var(--input) / <alpha-value>)',
-        ring: 'rgb(var(--ring) / <alpha-value>)',
-        background: 'rgb(var(--background) / <alpha-value>)',
+        background: 'hsl(var(--background) / <alpha-value>)',
+        border: 'hsl(var(--border) / <alpha-value>)',
+        input: 'hsl(var(--input) / <alpha-value>)',
+        ring: 'hsl(var(--ring) / <alpha-value>)',
+        accent: {
+          DEFAULT: 'hsl(var(--accent) / <alpha-value>)',
+          foreground: 'hsl(var(--accent-foreground) / <alpha-value>)'
+        },
         foreground: {
-          DEFAULT: 'rgb(var(--foreground) / <alpha-value>)',
-          subtle: 'rgb(var(--foreground-subtle) / <alpha-value>)',
-          'very-subtle': 'rgb(var(--foreground-very-subtle) / <alpha-value>)'
+          DEFAULT: 'hsl(var(--foreground) / <alpha-value>)'
         },
         primary: {
-          DEFAULT: 'rgb(var(--primary) / <alpha-value>)',
-          foreground: 'rgb(var(--primary-foreground) / <alpha-value>)'
+          DEFAULT: 'hsl(var(--primary) / <alpha-value>)',
+          foreground: 'hsl(var(--primary-foreground) / <alpha-value>)'
         },
         secondary: {
-          DEFAULT: 'rgb(var(--secondary))',
-          foreground: 'rgb(var(--secondary-foreground) / <alpha-value>)'
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground) / <alpha-value>)'
         },
         popover: {
-          DEFAULT: 'rgb(var(--popover) / <alpha-value>)',
-          foreground: 'rgb(var(--popover-foreground) / <alpha-value>)'
+          DEFAULT: 'hsl(var(--popover) / <alpha-value>)',
+          foreground: 'hsl(var(--popover-foreground) / <alpha-value>)'
         },
         card: {
-          DEFAULT: 'rgb(var(--card) / <alpha-value>)',
-          foreground: 'rgb(var(--card-foreground) / <alpha-value>)'
+          DEFAULT: 'hsl(var(--card) / <alpha-value>)',
+          foreground: 'hsl(var(--card-foreground) / <alpha-value>)'
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted) / <alpha-value>)',
+          foreground: 'hsl(var(--muted-foreground) / <alpha-value>)'
         }
       },
 
@@ -135,7 +141,7 @@ const config: Config = {
           }
         ],
         abc: ['var(--font-abc)'],
-        mono: ['var(--font-mono)'],
+        mono: ['var(--font-mono)', ...fontFamily.mono],
         // mono: ['var(--font-geist-mono), monospace', ...fontFamily.mono],
         pixels: ['var(--font-pixels)'],
         pixelsHeading: ['var(--font-pixels-heading)']

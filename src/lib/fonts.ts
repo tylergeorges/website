@@ -53,6 +53,6 @@ export const fontAbc = localFont({
 
 export const fontPixels = localFont({
   variable: '--font-pixels',
-  src: '../app/fonts/DepartureMono-Regular.otf',
+  src: '../app/fonts/DepartureMono-Regular.woff2',
   display: 'swap'
 });
