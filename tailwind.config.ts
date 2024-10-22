@@ -1,12 +1,9 @@
 import type { Config } from 'tailwindcss';
 import { fontFamily } from 'tailwindcss/defaultTheme';
-import TailwindFluid, { extract } from 'fluid-tailwind';
 import TailwindTypography from '@tailwindcss/typography';
 import reset from 'tw-reset';
 
 import { TailwindChildren, TailwindFlexible } from './src/lib/tailwind/plugins';
-
-// Things that need to be exported on the client
 
 const config: Config = {
   presets: [reset],
@@ -16,8 +13,7 @@ const config: Config = {
       './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
       './src/components/**/*.{js,ts,jsx,tsx,mdx}',
       './src/app/**/*.{js,ts,jsx,tsx,mdx}'
-    ],
-    extract
+    ]
   },
   theme: {
     extend: {
@@ -66,14 +62,6 @@ const config: Config = {
           }
         }
       }),
-
-      aspectRatio: {
-        golden: '1.618'
-      },
-
-      borderRadius: {
-        '2.5cqw': '2.5cqw'
-      },
 
       maxWidth: {
         prose: '43rem' // the default 65ch seemingly waits for the font-face to load, which causes a FOUC
@@ -127,7 +115,7 @@ const config: Config = {
     }
   },
 
-  plugins: [TailwindFlexible, TailwindFluid, TailwindTypography, TailwindChildren]
+  plugins: [TailwindFlexible, TailwindTypography, TailwindChildren]
 };
 
 export default config;
