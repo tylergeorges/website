@@ -4,18 +4,9 @@ import TailwindFluid, { extract } from 'fluid-tailwind';
 import TailwindTypography from '@tailwindcss/typography';
 import reset from 'tw-reset';
 
-import { screens as _screens } from 'tw-reset/defaultTheme';
 import { TailwindChildren, TailwindFlexible } from './src/lib/tailwind/plugins';
 
-const { '2xl': _, ...screensInRem } = _screens;
-
 // Things that need to be exported on the client
-
-export const screens = {
-  ...screensInRem,
-  xs: '26rem',
-  md: '53.75rem'
-};
 
 const config: Config = {
   presets: [reset],
@@ -29,16 +20,6 @@ const config: Config = {
     extract
   },
   theme: {
-    container: () => {
-      const { xs, ...screensWithoutXs } = screens;
-
-      return {
-        center: true,
-        screens: screensWithoutXs
-      };
-    },
-    screens,
-
     extend: {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
@@ -133,16 +114,13 @@ const config: Config = {
       },
 
       fontFamily: {
-        // sans: ['var(--font-sans), monospace'],
         sans: [
           `var(--font-sans), ${fontFamily.sans.join(', ')}`,
           {
             fontFeatureSettings: "'ss11', 'ss04'"
           }
         ],
-        abc: ['var(--font-abc)'],
         mono: ['var(--font-mono)', ...fontFamily.mono],
-        // mono: ['var(--font-geist-mono), monospace', ...fontFamily.mono],
         pixels: ['var(--font-pixels)'],
         pixelsHeading: ['var(--font-pixels-heading)']
       }

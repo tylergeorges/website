@@ -3,7 +3,7 @@ import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 
 import { siteConfig } from '@/config/site';
-import { fontMono, fontSans, fontAbc, fontPixels } from '@/lib/fonts';
+import { fontMono, fontSans, fontPixels } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -40,7 +40,6 @@ export default function RootLayout({
         className={cn(
           'mx-auto min-h-screen max-w-2xl flex-1 bg-background px-6 py-12 font-sans text-foreground antialiased vertical sm:py-24',
           fontMono.variable,
-          fontAbc.variable,
           fontSans.variable,
           fontPixels.variable
         )}
