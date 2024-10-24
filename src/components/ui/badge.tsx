@@ -16,7 +16,7 @@ const badgeVariants = tv({
 
     color: {
       default: 'bg-primary text-primary-foreground',
-      secondary: 'border-muted-foreground/30 bg-muted-foreground/40 text-secondary-foreground40',
+      secondary: 'border-transparent bg-secondary text-secondary-foreground',
       white: 'text-white',
       orange: 'bg-orange-500 text-orange-500',
       red: 'text-red-500'

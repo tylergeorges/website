@@ -14,7 +14,6 @@ interface Props {
   dates: string;
   tags: readonly string[];
   link?: string;
-  image?: string;
   previewUrl?: string;
   links?: readonly {
     icon: React.ReactNode;
@@ -31,7 +30,6 @@ export const ProjectCard = ({
   dates,
   tags,
   link,
-  image,
   previewUrl,
   links,
   className
@@ -44,17 +42,7 @@ export const ProjectCard = ({
           alt={title}
           width={500}
           height={300}
-          className="h-40 w-full overflow-hidden object-cover object-top"
-        />
-      )}
-
-      {image && (
-        <Image
-          src={image}
-          alt={title}
-          width={500}
-          height={300}
-          className="h-40 w-full overflow-hidden object-cover object-top"
+          className="pointer-events-none mx-auto h-40 w-full object-cover object-top"
         />
       )}
     </Link>
@@ -65,35 +53,35 @@ export const ProjectCard = ({
         <div className="hidden font-sans text-xs underline print:visible">
           {link?.replace('https://', '').replace('www.', '').replace('/', '')}
         </div>
-        <p className="text-muted-foreground prose prose-invert max-w-full text-pretty font-sans text-xs">
+        <p className="prose prose-invert max-w-full text-pretty font-sans text-xs text-muted-foreground">
           {description}
         </p>
       </div>
     </CardHeader>
     <CardContent className="mt-auto px-2 vertical">
-      {tags && tags.length > 0 && (
+      {tags && tags.length > 0 ? (
         <div className="mt-2 flex flex-wrap gap-1">
           {tags?.map(tag => (
-            <Badge className="px-1 py-0 text-[10px]" variant="fill" key={tag}>
+            <Badge className="px-1 py-0 text-[10px]" color="secondary" variant="fill" key={tag}>
               {tag}
             </Badge>
           ))}
         </div>
-      )}
+      ) : null}
     </CardContent>
     <CardFooter className="px-2 pb-2">
-      {links && links.length > 0 && (
+      {links && links.length > 0 ? (
         <div className="flex-wrap items-start gap-1 horizontal">
           {links?.map((link, idx) => (
             <Link href={link?.href} key={idx} target="_blank">
-              <Badge key={idx} className="gap-2 px-2 py-1 text-[10px] horizontal">
+              <Badge key={idx} className="flex gap-2 px-2 py-1 text-[10px] font-medium">
                 {link.icon}
                 {link.type}
               </Badge>
             </Link>
           ))}
         </div>
-      )}
+      ) : null}
     </CardFooter>
   </Card>
 );

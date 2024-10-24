@@ -38,15 +38,14 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          'mx-auto min-h-screen max-w-2xl flex-1 bg-background px-6 py-12 font-sans text-foreground antialiased vertical sm:py-24',
+          'mx-auto min-h-screen max-w-2xl bg-background px-6 py-12 font-sans antialiased sm:py-24',
           fontMono.variable,
           fontSans.variable,
           fontPixels.variable
         )}
       >
-        <div className="flex-1">{children}</div>
-
         <TooltipProvider delayDuration={0}>
+          {children}
           <Navbar />
         </TooltipProvider>
         <Analytics />

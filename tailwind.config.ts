@@ -1,17 +1,15 @@
 import type { Config } from 'tailwindcss';
 import { fontFamily } from 'tailwindcss/defaultTheme';
 import TailwindTypography from '@tailwindcss/typography';
-import reset from 'tw-reset';
 
 import { TailwindChildren, TailwindFlexible } from './src/lib/tailwind/plugins';
 
 const config: Config = {
-  presets: [reset],
-
   content: {
     files: [
       './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
       './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+      './src/config/**/*.{js,ts,jsx,tsx,mdx}',
       './src/app/**/*.{js,ts,jsx,tsx,mdx}'
     ]
   },

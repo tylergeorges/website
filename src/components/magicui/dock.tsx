@@ -14,7 +14,7 @@ import { tv, VariantProps } from 'tailwind-variants';
 import { cn } from '@/lib/utils';
 
 const dockVariants = tv({
-  base: 'supports-backdrop-blur:bg-white/10 supports-backdrop-blur:dark:bg-black/10 mx-auto mt-8 flex h-[58px] w-max gap-2 rounded-2xl border p-2 backdrop-blur-md'
+  base: '"mx-auto flex h-full w-max items-end rounded-full border p-2'
 });
 
 export interface DockProps extends VariantProps<typeof dockVariants> {
@@ -29,7 +29,6 @@ const DEFAULT_MAGNIFICATION = 60;
 const DEFAULT_DISTANCE = 140;
 
 export interface DockIconProps {
-  size?: number;
   magnification?: number;
   distance?: number;
   mouseX?: any;
@@ -39,7 +38,6 @@ export interface DockIconProps {
 }
 
 const DockIcon = ({
-  size,
   magnification = DEFAULT_MAGNIFICATION,
   distance = DEFAULT_DISTANCE,
   mouseX,
@@ -87,25 +85,11 @@ const Dock = forwardRef<HTMLDivElement, DockProps>(
       children,
       magnification = DEFAULT_MAGNIFICATION,
       distance = DEFAULT_DISTANCE,
-      direction = 'bottom',
       ...props
     },
     ref
   ) => {
     const mouseX = useMotionValue(Infinity);
-
-    const renderChildren = () =>
-      Children.map(children, child => {
-        if (isValidElement(child) && child.type === DockIcon) {
-          return cloneElement(child, {
-            ...child.props,
-            mouseX,
-            magnification,
-            distance
-          });
-        }
-        return child;
-      });
 
     return (
       <motion.div
@@ -113,13 +97,18 @@ const Dock = forwardRef<HTMLDivElement, DockProps>(
         onMouseMove={e => mouseX.set(e.pageX)}
         onMouseLeave={() => mouseX.set(Infinity)}
         {...props}
-        className={cn(dockVariants({ className }), {
-          'items-start': direction === 'top',
-          'items-center': direction === 'middle',
-          'items-end': direction === 'bottom'
-        })}
+        className={dockVariants({ className })}
       >
-        {renderChildren()}
+        {Children.map(children, child => {
+          if (isValidElement(child) && child.type === DockIcon) {
+            return cloneElement(child, {
+              mouseX,
+              magnification,
+              distance
+            } as DockIconProps);
+          }
+          return child;
+        })}
       </motion.div>
     );
   }

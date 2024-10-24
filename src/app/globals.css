@@ -1,5 +1,3 @@
-@import 'https://www.nerdfonts.com/assets/css/webfont.css';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -72,22 +70,6 @@
     @apply justify-between;
   }
 }
-/* 
-@font-face {
-  font-family: abc;
-  src: url(./fonts/ABCDiatypeVariable.woff2) format('woff2');
-  font-weight: 100 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: abc-v;
-  src: url(./fonts/ABCDiatypeVariable.woff2) format('woff2');
-  font-weight: 100 800;
-  font-style: normal;
-  font-display: swap;
-} */
 
 html ::selection {
   @apply bg-foreground text-background;
@@ -95,18 +77,14 @@ html ::selection {
 
 @layer base {
   html {
-    @apply size-full scroll-smooth;
+    @apply scroll-smooth;
   }
-
   * {
     @apply border-border;
   }
-
   body {
     font-variant-numeric: slashed-zero;
-    @apply size-full flex-1 bg-background text-foreground vertical;
-    text-rendering: optimizeLegibility;
-    /* font-feature-settings: 'ss05'; */
+    @apply bg-background text-foreground;
   }
 }
 
@@ -194,8 +172,3 @@ html {
   -webkit-font-smoothing: subpixel-antialiased;
   -webkit-text-size-adjust: none;
 }
-
-/* h1 {
-  font-variation-settings: 'wght' 730;
-  letter-spacing: -0.032em;
-} */

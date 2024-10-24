@@ -44,6 +44,11 @@ export const siteConfig = {
           type: 'Website',
           href: 'https://stiqqr.vercel.app',
           icon: <Icons.Globe className="size-3 text-primary-foreground" />
+        },
+        {
+          type: 'Source',
+          href: 'https://github.com/tylergeorges/stiqqr',
+          icon: <Icons.GitHub className="size-3 text-primary-foreground" />
         }
       ],
       image: '',
@@ -58,7 +63,7 @@ export const siteConfig = {
         'Echo Chat is a real-time messaging platform inspired by Discord, designed to offer seamless communication within communities. Built using Next.js 14 App Router and Supabase real-time, Echo Chat allows users to create channels, send messages, and interact in real-time with intuitive, responsive UI powered by Tailwind CSS.',
       technologies: [
         'Next.js',
-        'Typescript',
+        'TypeScript',
         'Supabase',
         'Drizzle',
         'TailwindCSS',
@@ -70,6 +75,11 @@ export const siteConfig = {
           type: 'Website',
           href: 'https://echochat.vercel.app',
           icon: <Icons.Globe className="size-3 text-primary-foreground" />
+        },
+        {
+          type: 'Source',
+          href: 'https://github.com/tylergeorges/echochat',
+          icon: <Icons.GitHub className="size-3 text-primary-foreground" />
         }
       ],
       image: '',
@@ -83,9 +93,15 @@ export const siteConfig = {
         name: 'GitHub',
         icon: Icons.GitHub,
         navbar: true,
-        url:"https://github.com/tylergeorges"
+        url: 'https://github.com/tylergeorges'
+      },
+      Email: {
+        name: 'Email',
+        icon: Icons.Mail,
+        navbar: true,
+        url: 'mailto:tmg320v@gmail.com'
       }
     }
   },
-  skills: ['React', 'Next.js', 'Typescript', 'Node.js']
+  skills: ['React', 'Next.js', 'TypeScript', 'Node.js']
 } satisfies SiteConfig;

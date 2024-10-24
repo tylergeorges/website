@@ -95,7 +95,6 @@ export default function Home() {
                   description={project.description}
                   dates={project.dates}
                   tags={project.technologies}
-                  image={project.image}
                   previewUrl={project.previewUrl}
                   links={project.links}
                 />
@@ -112,7 +111,7 @@ export default function Home() {
                 Contact
               </div>
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Get in Touch</h2>
-              <p className="text-muted-foreground mx-auto max-w-[600px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Want to chat? send me an&nbsp;
                 <Link
                   href="mailto:tmg320v@gmail.com"
