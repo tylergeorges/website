@@ -1,51 +1,50 @@
 'use client';
 
-import Image from 'next/image';
 import { forwardRef } from 'react';
+import * as AvatarPrimitive from '@radix-ui/react-avatar';
 
 import { cn } from '@/lib/utils';
 
 const Avatar = forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<'div'>>(
   ({ className, ...props }, ref) => (
-    <div
+    <AvatarPrimitive.Root
       ref={ref}
-      className={cn('relative flex h-10 w-10 overflow-hidden rounded-full shrink-0', className)}
+      className={cn('relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full', className)}
       {...props}
     />
   )
 );
 
-Avatar.displayName = 'Avatar';
+Avatar.displayName = AvatarPrimitive.Root.displayName;
 
 const AvatarImage = forwardRef<
-  React.ElementRef<typeof Image>,
-  React.ComponentPropsWithoutRef<typeof Image>
->(({ className, width = 24, height = 24, alt, ...props }, ref) => (
-  <Image
+  React.ElementRef<typeof AvatarPrimitive.Image>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
+>(({ className, alt, ...props }, ref) => (
+  <AvatarPrimitive.Image
     ref={ref}
     alt={alt}
-    width={width}
-    height={height}
     className={cn('aspect-square h-full w-full', className)}
     {...props}
   />
 ));
 
-AvatarImage.displayName = 'AvatarImage';
+AvatarImage.displayName = AvatarPrimitive.Image.displayName;
 
-const AvatarFallback = forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<'div'>>(
-  ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        'bg-muted flex h-full w-full items-center justify-center rounded-full',
-        className
-      )}
-      {...props}
-    />
-  )
-);
+const AvatarFallback = forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Fallback>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Fallback
+    ref={ref}
+    className={cn(
+      'flex h-full w-full items-center justify-center rounded-full bg-muted',
+      className
+    )}
+    {...props}
+  />
+));
 
-AvatarFallback.displayName = 'AvatarFallback';
+AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
 
 export { Avatar, AvatarImage, AvatarFallback };
