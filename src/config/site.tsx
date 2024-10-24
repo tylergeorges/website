@@ -27,7 +27,7 @@ export const siteConfig = {
     {
       title: 'Stiqqr',
       href: 'https://stiqqr.vercel.app',
-      dates: 'Sep 2024 - Oct 2024',
+      dates: 'Sep 2024 - Current',
       description:
         'stiqqr is a real-time task management app that simplifies project tracking and task management. Much like Linear, it offers a minimalist, productivity-focused design to help teams stay organized and productive. The app uses real-time updates, allowing teams to create, assign, and track tasks effortlessly. With an emphasis on collaboration, stiqqr ensures that projects stay on track, and everyone is informed.',
       technologies: [
